@@ -29,7 +29,25 @@ class StreamingPlatformsAdmin(admin.ModelAdmin):
 admin.site.register(StreamingPlatforms, StreamingPlatformsAdmin)
 
 
+class PlatformContentForm(
+    forms.ModelForm):  # Form to validate there is not multiple entrey with same content and user.
+    class Meta:
+        model = PlatformContent
+        fields = '__all__'
+
+    def clean(self):
+        if self.instance.pk is None:  # add
+            if PlatformContent.objects.filter(content=self.cleaned_data['content'],
+                                              platform=self.cleaned_data['platform']).exists():
+                error = "A connection has already been defined for this content. To change this edit the existing " \
+                        "entry. "
+                error2 = "A connection has already been defined for this platform. To change this edit the existing " \
+                         "entry. "
+                raise ValidationError({'content': [error], 'platform': [error2]})
+
+
 class PlatformContentAdmin(admin.ModelAdmin):
+    form = PlatformContentForm
     readonly_fields = ('date_creation', 'date_last_update')
     list_display = ('content', 'get_content_type', 'platform', 'id_in_platform', 'date_last_update')
     ordering = ['content', 'platform']
@@ -44,7 +62,22 @@ class PlatformContentAdmin(admin.ModelAdmin):
 admin.site.register(PlatformContent, PlatformContentAdmin)
 
 
+class AssessmentForm(forms.ModelForm):  # Form to validate there is not multiple entry with same content and user.
+    class Meta:
+        model = Assessment
+        fields = '__all__'
+
+    def clean(self):
+        if self.instance.pk is None:  # add
+            if Assessment.objects.filter(content=self.cleaned_data['content'],
+                                         user=self.cleaned_data['user']).exists():
+                error = "A rating has already been defined for this content. To change this edit the existing entry."
+                error2 = "A rating has already been defined for this user. To change this edit the existing entry."
+                raise ValidationError({'content': [error], 'user': [error2]})
+
+
 class AssessmentAdmin(admin.ModelAdmin):
+    form = AssessmentForm
     readonly_fields = ('date_creation', 'date_last_update')
     list_display = ('content', 'user', 'value', 'date_creation', 'date_last_update')
     ordering = ['content']
@@ -55,7 +88,7 @@ admin.site.register(Assessment, AssessmentAdmin)
 
 
 class StatusUserContentForm(
-    forms.ModelForm):  # Form to validate there is not multiple entrey with same content and user.
+    forms.ModelForm):  # Form to validate there is not multiple entry with same content and user.
     class Meta:
         model = StatusUserContent
         fields = '__all__'
@@ -64,8 +97,10 @@ class StatusUserContentForm(
         if self.instance.pk is None:  # add
             if StatusUserContent.objects.filter(content=self.cleaned_data['content'],
                                                 user=self.cleaned_data['user']).exists():
-                raise ValidationError(
-                    'A status has already defined for this content and user. To change the status edit the existing entry.')
+                error = "A status has already been defined for this content. To change this edit the existing entry."
+                error2 = "A status has already been defined for this user. To change this edit the existing entry."
+                raise ValidationError({'content': [error], 'user': [error2]})
+
 
 class StatusUserContentAdmin(admin.ModelAdmin):
     form = StatusUserContentForm

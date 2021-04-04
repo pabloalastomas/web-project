@@ -12,7 +12,7 @@ class Content(models.Model):
     title = models.CharField(max_length=70, verbose_name='Original Title')
     synopsis = models.TextField(verbose_name='Synopsis', blank=True, null=True)
     airdate = models.DateField(verbose_name='Airdate')
-    type = models.CharField(choices=TYPES, verbose_name='Content Type', max_length=5)
+    type = models.CharField(choices=TYPES, verbose_name='Content Type', max_length=1)
     id_in_api = models.CharField(max_length=20, verbose_name='Content ID in API')
     date_creation = models.DateTimeField(auto_now_add=True, verbose_name='Creation Date')
     date_last_update = models.DateTimeField(auto_now=True, verbose_name='Modification Date')
@@ -60,8 +60,8 @@ class PlatformContent(models.Model):
         return f'Content: {self.content.title} - Platform: {self.platform.name}'
 
     class Meta:
-        verbose_name = 'Streaming Platform'
-        verbose_name_plural = 'Streaming Platforms'
+        verbose_name = 'Platform Content'
+        verbose_name_plural = 'Platforms Contents'
 
 
 class IntegerRangeField(models.IntegerField):
@@ -99,17 +99,20 @@ class StatusUserContent(models.Model):
     )
     content = models.ForeignKey(Content, on_delete=models.CASCADE, verbose_name='Content to assessment')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='User')
-    type = models.CharField(choices=TYPES, verbose_name='Content Type', max_length=5)
+    type = models.CharField(choices=TYPES, verbose_name='Status', max_length=1)
     review = models.TextField(verbose_name='Review', blank=True, null=True)
     date_creation = models.DateTimeField(auto_now_add=True, verbose_name='Watched Date')
+    date_last_update = models.DateTimeField(auto_now=True, verbose_name='Modification Date')
 
     def type_select(self):
         for type in self.TYPES:
             if self.type in type[0]:
                 return type[1]
 
+    type_select.short_description = 'Status Type'
+
     def __str__(self):
-        return f'Type: {self.type_select} - Content: {self.content.title} - User: {self.user.id}'
+        return self.content.title
 
     class Meta:
         verbose_name = 'User Content Relation'

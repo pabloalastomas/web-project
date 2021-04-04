@@ -1,5 +1,7 @@
 from django import forms
-from django.contrib import admin
+from django.contrib import admin, messages
+from django.core.exceptions import ValidationError
+
 from entertainment_db.models import *
 
 # Register your models here.
@@ -64,7 +66,6 @@ class StatusUserContentForm(
                                                 user=self.cleaned_data['user']).exists():
                 raise ValidationError(
                     'A status has already defined for this content and user. To change the status edit the existing entry.')
-
 
 class StatusUserContentAdmin(admin.ModelAdmin):
     form = StatusUserContentForm

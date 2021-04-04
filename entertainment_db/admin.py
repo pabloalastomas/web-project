@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 from entertainment_db.models import *
 
@@ -51,7 +52,22 @@ class AssessmentAdmin(admin.ModelAdmin):
 admin.site.register(Assessment, AssessmentAdmin)
 
 
+class StatusUserContentForm(
+    forms.ModelForm):  # Form to validate there is not multiple entrey with same content and user.
+    class Meta:
+        model = StatusUserContent
+        fields = '__all__'
+
+    def clean(self):
+        if self.instance.pk is None:  # add
+            if StatusUserContent.objects.filter(content=self.cleaned_data['content'],
+                                                user=self.cleaned_data['user']).exists():
+                raise ValidationError(
+                    'A status has already defined for this content and user. To change the status edit the existing entry.')
+
+
 class StatusUserContentAdmin(admin.ModelAdmin):
+    form = StatusUserContentForm
     readonly_fields = ('date_creation', 'date_last_update')
     list_display = ('content', 'user', 'type_select', 'date_creation', 'date_last_update')
     ordering = ['content']

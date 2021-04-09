@@ -11,7 +11,7 @@
     <a href="{% url 'login' %}" class="logo">Entertainment DB</a>
     <ul class="menu">
         {% if request.user.is_authenticated %}
-            <li><a href="{% url "logout" %}">Sign out</a></li>
+            <li><a href="{% url "logout" %}">Log out</a></li>
         {% else %}
             <li><a href="{% url "login" %}">Sign in</a></li>
         {% endif %}

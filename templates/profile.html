@@ -11,7 +11,7 @@
     <div class="module">
         Welcome <b>{{ user }}</b>
         <p>You last logged in on {{ user.last_login }}.</p>
-        {% if user.is_staff %} <p><a href="{% url "admin:index" %}"> Admin Panel</a></p> {% endif %}
-        <p><a href="{% url "admin" %}"> Logout</a></p>
+        {% if user.is_staff %} <p><a href="{% url "admin:index" %}" target="_blank"> Admin Panel</a></p> {% endif %}
+        <p><a href="{% url "logout" %}"> Logout</a></p>
     </div>
 {% endblock %}

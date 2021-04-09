@@ -5,13 +5,13 @@
 {% endblock %}
 
 {% block content %}
-  <h1>
-    User Profile
-  </h1>
-  <div class="module">
-   Welcome <b>{{ user }}</b>
-   <p>You last logged in on {{ user.last_login }}.</p>
-   <p><a href="{% url "logout" %}">
-        Logout</a></p>
-  </div>
+    <h1>
+        User Profile
+    </h1>
+    <div class="module">
+        Welcome <b>{{ user }}</b>
+        <p>You last logged in on {{ user.last_login }}.</p>
+        {% if user.is_staff %} <p><a href="{% url "admin:index" %}"> Admin Panel</a></p> {% endif %}
+        <p><a href="{% url "admin" %}"> Logout</a></p>
+    </div>
 {% endblock %}

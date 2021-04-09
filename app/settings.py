@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
-import django_heroku
+# import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from django.urls import reverse_lazy
@@ -133,4 +133,4 @@ STATICFILES_DIRS = [
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = reverse_lazy('profile')
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())

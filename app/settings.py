@@ -130,7 +130,7 @@ STATICFILES_DIRS = [
     '/var/www/static/',
 ]
 
-LOGIN_URL = '/login/'
+LOGIN_URL = ''
 LOGIN_REDIRECT_URL = reverse_lazy('profile')
 
 # django_heroku.settings(locals())

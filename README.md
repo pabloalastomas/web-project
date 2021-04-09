@@ -7,4 +7,4 @@ David Morea
 Xavier Nadal  
 Josep Sala
 
-Universitat de Lleida
+*Universitat de Lleida (UdL)*

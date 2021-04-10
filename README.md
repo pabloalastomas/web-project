@@ -1,13 +1,13 @@
 # Web Project Entertainment DB
-To run/deploy the project:  
+### Run/deploy the project:  
 - Heroku: https://entertainment-db-udl.herokuapp.com/
 - Docker: *docker-compose.yml*
 
-Credentials (user / pasword):  
+### Credentials (user / pasword):  
 - Admin User: *admin / webproject*
 - Non Admin User: *noadmin / webproject*
 
-Developed by:  
+### Developed by:  
 Ilyass Mahdiyan  
 Pablo Alás  
 Sergio Beltrán  

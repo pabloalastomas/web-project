@@ -79,7 +79,7 @@ class AssessmentForm(forms.ModelForm):  # Form to validate there is not multiple
 class AssessmentAdmin(admin.ModelAdmin):
     form = AssessmentForm
     readonly_fields = ('date_creation', 'date_last_update')
-    list_display = ('content', 'user', 'value', 'date_creation', 'date_last_update')
+    list_display = ('content', 'user', 'rating', 'date_creation', 'date_last_update')
     ordering = ['content']
     empty_value_display = 'Empty data'
 

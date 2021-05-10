@@ -63,6 +63,7 @@ class PlatformContent(models.Model):
     class Meta:
         verbose_name = 'Platform Content'
         verbose_name_plural = 'Platforms Contents'
+        unique_together = ("content", "platform")
 
 
 class IntegerRangeField(models.IntegerField):
@@ -77,18 +78,21 @@ class IntegerRangeField(models.IntegerField):
 
 
 class Assessment(models.Model):
+    RATING_CHOICES = ((1, 'one'), (2, 'two'), (3, 'three'), (4, 'four'), (5, 'five'))
+    rating = models.PositiveSmallIntegerField(verbose_name='Rating (stars)', blank=False, default=3, choices=RATING_CHOICES)
     content = models.ForeignKey(Content, on_delete=models.CASCADE, verbose_name='Content to assessment')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='User')
-    value = IntegerRangeField(verbose_name='Rating', min_value=0, max_value=5)
+    # value = IntegerRangeField(verbose_name='Rating', min_value=0, max_value=5)
     date_creation = models.DateTimeField(auto_now_add=True, verbose_name='Creation Date')
     date_last_update = models.DateTimeField(auto_now=True, verbose_name='Modification Date')
 
     def __str__(self):
-        return f'Rating: {self.value} - Content: {self.content.title} - User: {self.user.id}'
+        return f'Rating: {self.rating} - Content: {self.content.title} - User: {self.user.id}'
 
     class Meta:
         verbose_name = 'Assessment'
         verbose_name_plural = 'Assessments'
+        unique_together = ("content", "user")
 
 
 class StatusUserContent(models.Model):
@@ -118,3 +122,4 @@ class StatusUserContent(models.Model):
     class Meta:
         verbose_name = 'User Content Relation'
         verbose_name_plural = 'User Content Relations'
+        unique_together = ("content", "user")

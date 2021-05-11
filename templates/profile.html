@@ -9,14 +9,17 @@
         User Profile
     </h1>
     <div class="module">
+        <br>
         Welcome <b>{{ user }}</b>
         <p>You last logged in on {{ user.last_login }}.</p>
-        {% if user.is_staff %} <p><a href="{% url "admin:index" %}" target="_blank"> Admin Panel</a></p> {% endif %}
+
         <p><a href="{% url "logout" %}"> Logout</a></p>
     </div>
     <div class="module">
-        <select class="js-example-data-ajax form-control">
-            <option value="3620194" selected="selected">select2/select2</option>
-        </select>
+        <br>
+        {% if user.is_staff %}
+            <p><a class="button" href="{% url "admin:index" %}" target="_blank"> Admin Panel</a></p> {% endif %}
+        <p><a class="button" href="{% url 'content:rating' %}" target="_blank">Rating Content</a></p>
+        <p><a class="button" href="{% url 'content:rating' %}" target="_blank">Change Content Status</a></p>
     </div>
 {% endblock %}

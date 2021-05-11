@@ -150,7 +150,7 @@ label {
     margin: 0 0 8px 0;
 }
 
-input, select, textarea {
+input, select, select2, textarea {
     border: 1px solid #ccc;
     border-bottom: 3px solid #ccc;
     padding: 8px 12px;
@@ -185,6 +185,8 @@ a.secondary-button {
     padding: 10px 20px;
     margin: 10px 0;
 }
+
+
 
 input[type=submit]:hover, a.button:hover {
     background: #96236e;

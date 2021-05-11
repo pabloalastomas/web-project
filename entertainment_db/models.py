@@ -7,13 +7,13 @@ from django.db import models
 
 class Content(models.Model):
     TYPES = (
-        ('a', 'Movie'),
-        ('b', 'Serie'),
+        ('movie', 'Movie'),
+        ('series', 'Serie'),
     )
     title = models.CharField(max_length=70, verbose_name='Original Title')
     synopsis = models.TextField(verbose_name='Synopsis', blank=True, null=True)
     airdate = models.DateField(verbose_name='Airdate')
-    type = models.CharField(choices=TYPES, verbose_name='Content Type', max_length=1)
+    type = models.CharField(choices=TYPES, verbose_name='Content Type', max_length=6)
     id_in_api = models.CharField(max_length=20, verbose_name='Content ID in API')
     date_creation = models.DateTimeField(auto_now_add=True, verbose_name='Creation Date')
     date_last_update = models.DateTimeField(auto_now=True, verbose_name='Modification Date')

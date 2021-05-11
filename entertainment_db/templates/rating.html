@@ -3,20 +3,92 @@
 {% block title %}Rating{% endblock %}
 
 {% block content %}
-  <h1>Log-in</h1>
-  <div class="module">
-    {% if form.errors %}
-      <p>Your username and password didn't match. Please try again.</p>
-    {% else %}
-      <p>Please, use the following form to log-in:</p>
-    {% endif %}
-    <div class="login-form">
-      <form action="{% url 'login' %}" method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Log-in"></p>
-          <p>If you don't have an account, <a href="{% url 'register' %}">sign up</a>.</p>
-      </form>
+    <h1>Rating</h1>
+    <div class="module">
+        {% if form.errors %}
+            <p>{{ form.errors }}</p>
+        {% endif %}
+        <div class="empty-form">
+            <form method="post" action="." enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <label for="search_bar">Content to rate:</label>
+                <select class="js-example-data-ajax form-control" name="search_bar" id="search_bar"> </select>
+                <input type="submit" value="Save">
+            </form>
+        </div>
     </div>
-  </div>
+
+{% endblock %}
+{% block javascript %}
+    <script>
+        $(document).ready(function () {
+            $('select[name="content"]').disabled = true;
+            $('#search_bar').select2({
+                ajax: {
+                    type: "GET",
+                    url: "{% url 'content:content_search' %}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) {
+                        // parse the results into the format expected by Select2
+                        // since we are using custom formatting functions we do not need to
+                        // alter the remote JSON data, except to indicate that infinite
+                        // scrolling can be used
+                        params.page = params.page || 1;
+
+                        return {
+                            results: data.items,
+                            pagination: {
+                                more: (params.page * 30) < data.total_count
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                placeholder: 'Search for content',
+                minimumInputLength: 1,
+                templateResult: formatRepo,
+                templateSelection: formatRepoSelection
+            });
+
+            function formatRepo(repo) {
+                if (repo.loading) {
+                    return repo.text;
+                }
+
+                var $container = $(
+                    "<div class='select2-result-repository clearfix' style=\"width: 100%\">" +
+                    "<div class='select2-result-repository__avatar'><img src='" + repo.img + "' /></div>" +
+                    "<div class='select2-result-repository__title'></div>" +
+                    "<div class='select2-result-repository__description'></div>" +
+                    "<div class='select2-result-repository__statistics'>" +
+                    "<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> </div>" +
+                    "</div>" +
+                    "</div>"
+                );
+
+                $container.find(".select2-result-repository__title").text(repo.name);
+                $container.find(".select2-result-repository__description").text("Type: " + repo.type);
+                $container.find(".select2-result-repository__forks").append("ID: " + repo.id);
+
+                return $container;
+            }
+
+            function formatRepoSelection(repo) {
+                if (repo.name) {
+                    return repo.id + " - " + repo.name
+                } else {
+                    return repo.text
+                }
+            }
+        });
+
+    </script>
 {% endblock %}

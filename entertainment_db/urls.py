@@ -18,10 +18,11 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from entertainment_db.content_search import search_bar
-from entertainment_db.views import UserRegistrationView, UserProfileView
+from entertainment_db.views import AssessmentCreateView
 app_name = 'content'
 
 urlpatterns = [
     path('search/', search_bar, name='content_search'),
+    path('rating/', AssessmentCreateView.as_view(), name='rating'),
 
 ]

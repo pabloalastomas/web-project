@@ -2,13 +2,14 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Exists
+from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, DetailView
 from pip._vendor import requests
 
-from entertainment_db.forms import AssessmentForm
+from entertainment_db.forms import AssessmentForm, StatusUserContentForm
 from entertainment_db.models import *
 from datetime import datetime
 
@@ -63,13 +64,14 @@ class AssessmentCreateView(CreateView):
         id_content = request.POST.get("search_bar", "")
         if not Content.objects.filter(id_in_api=id_content):
             response = requests.get(f'http://www.omdbapi.com/?i={id_content}&apikey=329c0d5e').json()
-            Content.objects.create(title=response['Title'], synopsis=response['Plot'], airdate=datetime.strptime(response['Released'], "%d %b %Y"),
-                                   type=response['Type'], id_in_api=id_content).save()
+            Content.objects.create(title=response['Title'], synopsis=response['Plot'],
+                                   airdate=datetime.strptime(response['Released'], "%d %b %Y"),
+                                   type=response['Type'], id_in_api=id_content, poster_url=response['Poster']).save()
         try:
             record = Assessment.objects.filter(content=Content.objects.get(id_in_api=id_content), user=request.user)
             if not record:
                 Assessment.objects.create(content=Content.objects.get(id_in_api=id_content), user=request.user,
-                                      rating=rating)
+                                          rating=rating)
             else:
                 record[0].rating = rating
                 record[0].save()
@@ -89,4 +91,53 @@ class AssessmentCreateView(CreateView):
         # Nombre del Botón
         context['name'] = 'Crear Actividad'
         context['content'] = '¿Estás seguro de que quieres añadir la actividad?'
+        return context
+
+
+@login_required
+def search_bar(request):
+    if request.method == 'GET':
+        search_word = request.GET['q']
+        content = list()
+        response = requests.get(f'http://www.omdbapi.com/?s={search_word}&apikey=329c0d5e').json()
+        for data in response['Search']:
+            content.append({"id": data['imdbID'], "name": data['Title'], "type": data['Type'], "img": data['Poster']})
+        return JsonResponse({"total_count": len(content), "items": content})
+
+
+@login_required
+def update_status(request, content_id):
+    if request.method == 'POST':
+        status = request.POST.get("type", "")
+        review = request.POST.get("review", "")
+        actual_status = StatusUserContent.objects.filter(user=request.user, content__pk=content_id)
+        if actual_status:
+            if request.user.pk == actual_status[0].user.pk:
+                actual_status[0].type = status
+                if review:
+                    actual_status[0].review = review
+                actual_status[0].save()
+            else:
+                return HttpResponseForbidden()
+        else:
+            StatusUserContent.objects.create(content_id=content_id, user=request.user, type=status,
+                                             review=review).save()
+        return redirect(reverse_lazy("content:info", kwargs={'pk': content_id}))
+
+
+class ContentDetailView(DetailView):
+    model = Content
+    template_name = 'info.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = str(self.object.title)
+        actual_status = StatusUserContent.objects.filter(user=self.request.user, content__pk=self.object.pk)
+        if actual_status:
+            context['status_content'] = {'exists': 1, 'value': actual_status[0].type, 'review': actual_status[0].review}
+        context['status_form'] = StatusUserContentForm()
         return context

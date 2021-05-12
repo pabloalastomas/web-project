@@ -9,6 +9,14 @@
             <p>{{ form.errors }}</p>
         {% endif %}
         <div class="empty-form">
+            <select class="star-rating">
+                <option value="">Select a rating</option>
+                <option value="5">Excellent</option>
+                <option value="4">Very Good</option>
+                <option value="3">Average</option>
+                <option value="2">Poor</option>
+                <option value="1">Terrible</option>
+            </select>
             <form method="post" action="." enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
@@ -23,7 +31,6 @@
 {% block javascript %}
     <script>
         $(document).ready(function () {
-            $('select[name="content"]').disabled = true;
             $('#search_bar').select2({
                 ajax: {
                     type: "GET",
@@ -88,7 +95,10 @@
                     return repo.text
                 }
             }
+
+            var stars = new StarRating('.star-rating');
         });
 
     </script>
+
 {% endblock %}

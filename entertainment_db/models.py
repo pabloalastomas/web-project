@@ -13,6 +13,7 @@ class Content(models.Model):
     title = models.CharField(max_length=70, verbose_name='Original Title')
     synopsis = models.TextField(verbose_name='Synopsis', blank=True, null=True)
     airdate = models.DateField(verbose_name='Airdate')
+    poster_url = models.URLField(verbose_name='Poster')
     type = models.CharField(choices=TYPES, verbose_name='Content Type', max_length=6)
     id_in_api = models.CharField(max_length=20, verbose_name='Content ID in API')
     date_creation = models.DateTimeField(auto_now_add=True, verbose_name='Creation Date')

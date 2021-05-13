@@ -1,3 +1,6 @@
-django
+django~=3.2.3
 gunicorn
 django-heroku
+behave~=1.2.6
+splinter~=0.14.0
+pip~=21.1.1

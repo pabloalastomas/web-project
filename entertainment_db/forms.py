@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from entertainment_db.models import Assessment, StatusUserContent
+from entertainment_db.models import Assessment, StatusUserContent, PlatformContent
 
 
 class AssessmentForm(ModelForm):
@@ -27,3 +27,15 @@ class StatusUserContentForm(ModelForm):
         model = StatusUserContent
         fields = '__all__'
         exclude = ['user', 'content']
+
+
+class PlatformContentForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
+            form.field.widget.attrs['autocomplete'] = 'off'
+
+    class Meta:
+        model = PlatformContent
+        fields = '__all__'

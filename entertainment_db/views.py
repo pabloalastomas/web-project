@@ -1,15 +1,14 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.db.models import Exists
 from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, TemplateView, DetailView
+from django.views.generic import CreateView, TemplateView, DetailView, DeleteView
 from pip._vendor import requests
 
-from entertainment_db.forms import AssessmentForm, StatusUserContentForm
+from entertainment_db.forms import *
 from entertainment_db.models import *
 from datetime import datetime
 
@@ -106,6 +105,22 @@ def search_bar(request):
 
 
 @login_required
+def search_bar_redirect(request):
+    if request.method == 'POST':
+        id_content = request.POST.get("search_bar", "")
+        content = Content.objects.filter(id_in_api=id_content)
+        if not content:
+            response = requests.get(f'http://www.omdbapi.com/?i={id_content}&apikey=329c0d5e').json()
+            content = Content.objects.create(title=response['Title'], synopsis=response['Plot'],
+                                             airdate=datetime.strptime(response['Released'], "%d %b %Y"),
+                                             type=response['Type'], id_in_api=id_content, poster_url=response['Poster'])
+            content.save()
+        else:
+            content = content[0]
+        return redirect(reverse_lazy("content:info", kwargs={'pk': content.pk}))
+
+
+@login_required
 def update_status(request, content_id):
     if request.method == 'POST':
         status = request.POST.get("type", "")
@@ -140,4 +155,51 @@ class ContentDetailView(DetailView):
         if actual_status:
             context['status_content'] = {'exists': 1, 'value': actual_status[0].type, 'review': actual_status[0].review}
         context['status_form'] = StatusUserContentForm()
+        return context
+
+
+class PlatformContentCreateView(CreateView):
+    model = PlatformContent
+    form_class = PlatformContentForm
+    template_name = 'form.html'
+    success_url = reverse_lazy('profile')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_form(self, **kwargs):
+        form = super().get_form(**kwargs)
+        if self.kwargs['id']:
+            content = Content.objects.get(id=self.kwargs['id'])
+            form.fields['content'].initial = content
+            form.fields['user'].initial = self.request.user
+            form.fields['user'].disabled = True
+        return form
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Título de la Página
+        context['title'] = 'Add link to a streaming platform'
+        return context
+
+
+class PlatformContentDeleteView(DeleteView):
+    model = PlatformContent
+    form_class = PlatformContentForm
+    template_name = 'delete.html'
+    success_url = reverse_lazy('profile')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        content = PlatformContent.objects.get(pk=self.kwargs['pk'])
+        if content.user == request.user:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Título de la Página
+        context['title'] = 'Delete link from a streaming platform'
         return context

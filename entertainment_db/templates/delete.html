@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <div class="module">
+        <form method="post" action="." enctype="multipart/form-data">
+            {% csrf_token %}
+            <h2><i class="icon fas fa-ban"></i> Please confirm </h2>
+            Are you sure to delete <b>{{ object }}</b>?
+            <br><br>
+            <strong>THIS ACTION IS PERMANENT</strong><br>
+            <input type="submit" value="Delete">
+        </form>
+    </div>
+{% endblock %}

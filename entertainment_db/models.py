@@ -52,8 +52,8 @@ class StreamingPlatforms(models.Model):
 class PlatformContent(models.Model):
     content = models.ForeignKey(Content, on_delete=models.CASCADE, verbose_name='Content')
     platform = models.ForeignKey(StreamingPlatforms, on_delete=models.CASCADE, verbose_name='Platform')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='User')
     url = models.URLField(verbose_name='Content URL in platform', blank=True, null=True)
-    id_in_platform = models.CharField(max_length=100, verbose_name='Content ID in platform', blank=True, null=True)
     description = models.TextField(verbose_name='Description', blank=True, null=True)
     date_creation = models.DateTimeField(auto_now_add=True, verbose_name='Creation Date')
     date_last_update = models.DateTimeField(auto_now=True, verbose_name='Modification Date')

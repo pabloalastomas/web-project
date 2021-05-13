@@ -15,14 +15,17 @@ Including another URLconf
 """
 from django.urls import path
 
-from entertainment_db.views import AssessmentCreateView, search_bar, update_status, ContentDetailView
+from entertainment_db.views import *
 
 app_name = 'content'
 
 urlpatterns = [
     path('search/', search_bar, name='content_search'),
+    path('search/go/', search_bar_redirect, name='content_search_go'),
     path('rating/', AssessmentCreateView.as_view(), name='rating'),
     path('info/<int:pk>/', ContentDetailView.as_view(), name='info'),
     path('update-status/<int:content_id>/', update_status, name='update-status'),
+    path('platform/add/<int:id>/', PlatformContentCreateView.as_view(), name='add_in_platform'),
+    path('platform/delete/<int:pk>/', PlatformContentDeleteView.as_view(), name='delete_in_platform'),
 
 ]

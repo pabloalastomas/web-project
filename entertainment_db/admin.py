@@ -49,7 +49,7 @@ class PlatformContentForm(
 class PlatformContentAdmin(admin.ModelAdmin):
     form = PlatformContentForm
     readonly_fields = ('date_creation', 'date_last_update')
-    list_display = ('content', 'get_content_type', 'platform', 'id_in_platform', 'date_last_update')
+    list_display = ('content', 'get_content_type', 'platform', 'user', 'date_last_update')
     ordering = ['content', 'platform']
     empty_value_display = 'Empty data'
 

@@ -26,9 +26,85 @@
     </ul>
 </div>
 <div id="content">
+    <form method="post" action="{% url 'content:content_search_go' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <select class="js-example-data-ajax form-control" name="search_bar" id="search_bar"> </select>
+        <input type="submit" value="Go">
+    </form>
     {% block content %}
     {% endblock %}
 </div>
+<script>
+    $(document).ready(function () {
+        $('#search_bar').select2({
+            ajax: {
+                type: "GET",
+                url: "{% url 'content:content_search' %}",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page
+                    };
+                },
+                processResults: function (data, params) {
+                    // parse the results into the format expected by Select2
+                    // since we are using custom formatting functions we do not need to
+                    // alter the remote JSON data, except to indicate that infinite
+                    // scrolling can be used
+                    params.page = params.page || 1;
+
+                    return {
+                        results: data.items,
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Search for content',
+            minimumInputLength: 1,
+            templateResult: formatRepo,
+            templateSelection: formatRepoSelection
+        });
+
+        function formatRepo(repo) {
+            if (repo.loading) {
+                return repo.text;
+            }
+
+            var $container = $(
+                "<div class='select2-result-repository clearfix' style=\"width: 100%\">" +
+                "<div class='select2-result-repository__avatar'><img src='" + repo.img + "' /></div>" +
+                "<div class='select2-result-repository__title'></div>" +
+                "<div class='select2-result-repository__description'></div>" +
+                "<div class='select2-result-repository__statistics'>" +
+                "<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> </div>" +
+                "</div>" +
+                "</div>"
+            );
+
+            $container.find(".select2-result-repository__title").text(repo.name);
+            $container.find(".select2-result-repository__description").text("Type: " + repo.type);
+            $container.find(".select2-result-repository__forks").append("ID: " + repo.id);
+
+            return $container;
+        }
+
+        function formatRepoSelection(repo) {
+            if (repo.name) {
+                return repo.id + " - " + repo.name
+            } else {
+                return repo.text
+            }
+        }
+
+        var stars = new StarRating('.star-rating');
+    });
+
+</script>
 {% block javascript %}
 {% endblock %}
 </body>

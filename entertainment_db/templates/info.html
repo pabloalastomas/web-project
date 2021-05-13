@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{{ object.title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ title }}</h1>
+    <h1>{{ object.title }}</h1>
     <div class="module">
         <form method="post" action="{% url 'content:update-status' object.pk %}" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ status_form.as_p }}
+            {{ status_form.type.label }}<br>
+            {{ status_form.type }}
             <input type="submit" value="Save">
         </form>
     </div>
@@ -18,8 +19,6 @@
         $(document).ready(function () {
             if ({{ status_content.exists }} == 1)
             {
-                document.getElementById('id_date_creation').value = "{{ status_content.date_creation }}";
-                document.getElementById('id_date_last_update').value = "{{ status_content.date_last_update }}";
                 document.getElementById('id_review').value = "{{ status_content.review }}";
                 document.getElementById('id_type').value = "{{ status_content.value }}";
             }

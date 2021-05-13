@@ -18,8 +18,10 @@
         $(document).ready(function () {
             if ({{ status_content.exists }} == 1)
             {
-                document.getElementById('id_type').value = "{{ status_content.value }}";
+                document.getElementById('id_date_creation').value = "{{ status_content.date_creation }}";
+                document.getElementById('id_date_last_update').value = "{{ status_content.date_last_update }}";
                 document.getElementById('id_review').value = "{{ status_content.review }}";
+                document.getElementById('id_type').value = "{{ status_content.value }}";
             }
         });
     </script>

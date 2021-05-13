@@ -9,6 +9,17 @@
             <p>{{ form.errors }}</p>
         {% endif %}
         <div class="empty-form">
+
+            <form method="post" action="." enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="search_bar">Content to rate:</label>
+                <select class="js-example-data-ajax form-control" name="search_bar" id="search_bar"> </select>
+
+                {{ form.as_p }}
+
+                <input type="submit" value="Save">
+
+            </form>
             <select class="star-rating">
                 <option value="">Select a rating</option>
                 <option value="5">Excellent</option>
@@ -16,14 +27,7 @@
                 <option value="3">Average</option>
                 <option value="2">Poor</option>
                 <option value="1">Terrible</option>
-            </select>
-            <form method="post" action="." enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <label for="search_bar">Content to rate:</label>
-                <select class="js-example-data-ajax form-control" name="search_bar" id="search_bar"> </select>
-                <input type="submit" value="Save">
-            </form>
+                </select>
         </div>
     </div>
 

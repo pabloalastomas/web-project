@@ -1,27 +1,93 @@
 {% extends "base.html" %}
 
+
 {% block title %}{{ object.title }}{% endblock %}
 
 {% block content %}
     <h1>{{ object.title }}</h1>
-    <div class="module">
-        <form method="post" action="{% url 'content:update-status' object.pk %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ status_form.type.label }}<br>
-            {{ status_form.type }}
-            <input type="submit" value="Save">
-        </form>
+    <div class="box">
+        <div class="box-row">
+            <div class="box-cell left_div">
+                <div id="image_poster">
+                    <img src="{{ object.poster_url }}">
+                </div>
+                <div id="form_info">
+                    <form method="post" action="{% url 'content:update-status' object.pk %}"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ status_form.as_p }}
+                        <input type="submit" value="Save">
+                    </form>
+                </div>
+
+            </div>
+            <div class="box-cell right_div">
+                <div id="synopsis">
+                    {{ object.synopsis }} <br>
+                </div>
+                <div id="airdate">
+                    <p>Airdate</p>
+                    {{ object.airdate }} <br>
+                </div>
+                <div id="rating_pair">
+                    <div id="rating_stars">
+                        <select class="star-rating">
+                            <option value="">Select a rating</option>
+                            <option value="5">Excellent</option>
+                            <option value="4">Very Good</option>
+                            <option value="3">Average</option>
+                            <option value="2">Poor</option>
+                            <option value="1">Terrible</option>
+                        </select>
+                    </div>
+                    <div id="global_review">
+                        <p id="global_review_text">
+                            Users' grade
+                        </p>
+                    </div>
+                </div>
+                <div id="table_data">
+                    <table class="table" id="datatable_status">
+                        <thead>
+                        <tr>
+                            <th scope="col" style="width: 25%;">Platform</th>
+                            <th scope="col" style="width: 25%;">URL</th>
+                            <th scope="col" style="width: 25%;">User</th>
+                            <th scope="col" style="width: 25%;">Options</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for s in content_links %}
+                            <tr>
+                                <td>{{ s.content.title }}</td>
+                                <td>{{ s.type_select }}</td>
+                                <td>{{ s.date_last_update }}</td>
+                                <td>opciones</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
 {% block javascript %}
     <script>
         $(document).ready(function () {
-            if ({{ status_content.exists }} == 1)
+            if ({{ status_content.exists }} == 1
+        )
             {
                 document.getElementById('id_review').value = "{{ status_content.review }}";
                 document.getElementById('id_type').value = "{{ status_content.value }}";
             }
+            var stars = new StarRating('.star-rating');
+            $('#datatable_status').DataTable({
+                responsive: true,
+                autoWidth: false
+            });
         });
+
     </script>
 {% endblock %}

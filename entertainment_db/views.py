@@ -43,6 +43,12 @@ class UserProfileView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_status'] = StatusUserContent.objects.filter(user=self.request.user)
+        context['user_ratings'] = Assessment.objects.filter(user=self.request.user)
+        return context
+
 
 class AssessmentCreateView(CreateView):
     model = Assessment

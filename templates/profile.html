@@ -22,4 +22,62 @@
         <p><a class="button" href="{% url 'content:rating' %}" target="_blank">Rating Content</a></p>
         <p><a class="button" href="{% url 'content:rating' %}" target="_blank">Change Content Status</a></p>
     </div>
+    <div class="module">
+        <table class="table" id="datatable_status">
+            <thead>
+            <tr>
+                <th scope="col" style="width: 25%;">Title</th>
+                <th scope="col" style="width: 25%;">Status</th>
+                <th scope="col" style="width: 25%;">Date</th>
+                <th scope="col" style="width: 25%;">Options</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for s in user_status %}
+                <tr>
+                    <td>{{ s.content.title }}</td>
+                    <td>{{ s.type_select }}</td>
+                    <td>{{ s.date_last_update }}</td>
+                    <td>opciones</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <table class="table" id="datatable_ratings">
+            <thead>
+            <tr>
+                <th scope="col" style="width: 25%;">Title</th>
+                <th scope="col" style="width: 25%;">Rating</th>
+                <th scope="col" style="width: 25%;">Date</th>
+                <th scope="col" style="width: 25%;">Options</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for r in user_ratings %}
+                <tr>
+                    <td>{{ r.content.title }}</td>
+                    <td>{{ r.rating }}</td>
+                    <td>{{ r.date_last_update }}</td>
+                    <td>opciones</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="application/javascript">
+        <!--    Representa el funcionamiento de la lista NO BORRAR-->
+        $(function () {
+            $('#datatable_status').DataTable({
+                responsive: true,
+                autoWidth: false
+            });
+            $('#datatable_ratings').DataTable({
+                responsive: true,
+                autoWidth: false
+            });
+        });
+    </script>
 {% endblock %}

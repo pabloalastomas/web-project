@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 
 from entertainment_db.models import Assessment, StatusUserContent, PlatformContent
 

@@ -5,6 +5,7 @@
     <meta charset="utf-8"/>
     <title>{% block title %}Entertainment DB{% endblock %}</title>
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    <link href="{% static 'css/table.css' %}" rel="stylesheet">
     <!-- jQuery -->
     <script src="{% static 'libs/jquery/jquery.min.js' %}"></script>
     <!-- Select2 -->
@@ -20,6 +21,8 @@
     <script src="{% static 'libs/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
     <script src="{% static 'libs/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
     <script src="{% static 'libs/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+    {% block head %}
+    {% endblock %}
 </head>
 <body>
 <div id="header">
@@ -35,7 +38,7 @@
 <div id="content">
     <form method="post" action="{% url 'content:content_search_go' %}" enctype="multipart/form-data">
         {% csrf_token %}
-        <select class="js-example-data-ajax form-control" name="search_bar" id="search_bar"></select>
+        <select class="js-example-data-ajax form-control" name="search_bar" id="search_bar" required></select>
         <input id="search_button" type="submit" value="Go">
     </form>
     {% block content %}
@@ -107,8 +110,6 @@
                 return repo.text
             }
         }
-
-        var stars = new StarRating('.star-rating');
     });
 
 </script>

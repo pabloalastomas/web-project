@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.http import JsonResponse, HttpResponseForbidden
+from django.db.models import Avg
+from django.http import JsonResponse, HttpResponseForbidden, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -50,53 +51,18 @@ class UserProfileView(TemplateView):
         return context
 
 
-class AssessmentCreateView(CreateView):
-    model = Assessment
-    form_class = AssessmentForm
-    template_name = 'rating.html'
-    success_url = reverse_lazy('profile')
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_form(self, **kwargs):
-        form = super().get_form(**kwargs)
-        return form
-
-    def post(self, request, *args, **kwargs):
-        rating = request.POST.get("rating", "")
-        id_content = request.POST.get("search_bar", "")
-        if not Content.objects.filter(id_in_api=id_content):
-            response = requests.get(f'http://www.omdbapi.com/?i={id_content}&apikey=329c0d5e').json()
-            Content.objects.create(title=response['Title'], synopsis=response['Plot'],
-                                   airdate=datetime.strptime(response['Released'], "%d %b %Y"),
-                                   type=response['Type'], id_in_api=id_content, poster_url=response['Poster']).save()
-        try:
-            record = Assessment.objects.filter(content=Content.objects.get(id_in_api=id_content), user=request.user)
-            if not record:
-                Assessment.objects.create(content=Content.objects.get(id_in_api=id_content), user=request.user,
-                                          rating=rating)
-            else:
-                record[0].rating = rating
-                record[0].save()
-            return redirect("profile")
-        except:
-            return render(request, 'rating.html')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Título de la Página
-        context['title'] = 'Añadir Actividad'
-        # Path de donde nos encontramos dentro de la página
-        context['menu'] = [
-            {'url': reverse_lazy('erp:activities_list'), 'name': 'Actividades'},
-            {'url': reverse_lazy('erp:activities_create'), 'name': 'Nueva Actividad'}
-        ]
-        # Nombre del Botón
-        context['name'] = 'Crear Actividad'
-        context['content'] = '¿Estás seguro de que quieres añadir la actividad?'
-        return context
+@login_required
+def rating(request):
+    if request.method == 'GET':
+        id_content = request.GET['content']
+        rating = request.GET['rating']
+        record = Assessment.objects.filter(content__pk=id_content, user=request.user)
+        if not record:
+            Assessment.objects.create(content_id=id_content, user=request.user, rating=rating)
+        else:
+            record[0].rating = rating
+            record[0].save()
+        return HttpResponse()
 
 
 @login_required
@@ -117,9 +83,13 @@ def search_bar_redirect(request):
         content = Content.objects.filter(id_in_api=id_content)
         if not content:
             response = requests.get(f'http://www.omdbapi.com/?i={id_content}&apikey=329c0d5e').json()
+            if response['Poster'] == "N/A":
+                poster = "https://gaprastore.com/wp-content/uploads/2020/12/no_image-1.jpg"
+            else:
+                poster = response['Poster']
             content = Content.objects.create(title=response['Title'], synopsis=response['Plot'],
                                              airdate=datetime.strptime(response['Released'], "%d %b %Y"),
-                                             type=response['Type'], id_in_api=id_content, poster_url=response['Poster'])
+                                             type=response['Type'], id_in_api=id_content, poster_url=poster)
             content.save()
         else:
             content = content[0]
@@ -156,11 +126,15 @@ class ContentDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = str(self.object.title)
         actual_status = StatusUserContent.objects.filter(user=self.request.user, content__pk=self.object.pk)
         if actual_status:
-            context['status_content'] = {'exists': 1, 'value': actual_status[0].type, 'review': actual_status[0].review}
+            context['status_content'] = {'exists': 1, 'value': str(actual_status[0].type), 'review': actual_status[0].review}
+        actual_rating = Assessment.objects.filter(user=self.request.user, content__pk=self.object.pk)
+        if actual_rating:
+            context['status_rating'] = {'exists': True, 'value': str(actual_rating[0].rating)}
         context['status_form'] = StatusUserContentForm()
+        context['global_rating'] = Assessment.objects.all().aggregate(Avg('rating'))
+        context['links'] = PlatformContent.objects.filter(content__pk=self.object.pk)
         return context
 
 

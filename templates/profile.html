@@ -23,7 +23,7 @@
         <p><a class="button" href="{% url 'content:rating' %}" target="_blank">Change Content Status</a></p>
     </div>
     <div class="module">
-        <table class="table" id="datatable_status">
+        <table class="display" id="datatable_status">
             <thead>
             <tr>
                 <th scope="col" style="width: 25%;">Title</th>
@@ -43,7 +43,7 @@
             {% endfor %}
             </tbody>
         </table>
-        <table class="table" id="datatable_ratings">
+        <table class="display" id="datatable_ratings">
             <thead>
             <tr>
                 <th scope="col" style="width: 25%;">Title</th>
@@ -72,11 +72,17 @@
         $(function () {
             $('#datatable_status').DataTable({
                 responsive: true,
-                autoWidth: false
+                autoWidth: false,
+                language: {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json"
+                }
             });
             $('#datatable_ratings').DataTable({
                 responsive: true,
-                autoWidth: false
+                autoWidth: false,
+                language: {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json"
+                }
             });
         });
     </script>

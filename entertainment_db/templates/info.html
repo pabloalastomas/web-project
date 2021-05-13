@@ -1,7 +1,19 @@
 {% extends "base.html" %}
 
-
 {% block title %}{{ object.title }}{% endblock %}
+
+{% block head %}
+    <style>
+        #id_type {
+            width: 300px;
+        }
+
+        #id_review {
+            width: 275px;
+            height: 100px;
+        }
+    </style>
+{% endblock %}
 
 {% block content %}
     <h1>{{ object.title }}</h1>
@@ -9,7 +21,7 @@
         <div class="box-row">
             <div class="box-cell left_div">
                 <div id="image_poster">
-                    <img src="{{ object.poster_url }}">
+                    <img src="{{ object.poster_url }}" width="300px" height="444px">
                 </div>
                 <div id="form_info">
                     <form method="post" action="{% url 'content:update-status' object.pk %}"
@@ -29,45 +41,49 @@
                     <p>Airdate</p>
                     {{ object.airdate }} <br>
                 </div>
-                <div id="rating_pair">
+                {% if status_content.value in "bc" %}
                     <div id="rating_stars">
-                        <select class="star-rating">
-                            <option value="">Select a rating</option>
-                            <option value="5">Excellent</option>
-                            <option value="4">Very Good</option>
-                            <option value="3">Average</option>
-                            <option value="2">Poor</option>
-                            <option value="1">Terrible</option>
+                        <select class="star-rating" id="star_rating">
+                            <option value="0">Select a rating</option>
+                            {% for i in '54321'|make_list %}
+                                {% if status_rating.value == i and status_rating.exists %}
+                                    <option value="{{ i }}" selected>{{ i }}</option>
+                                {% else %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endif %}
+                            {% endfor %}
                         </select>
                     </div>
-                    <div id="global_review">
-                        <p id="global_review_text">
-                            Users' grade
-                        </p>
-                    </div>
+                {% else %}
+                    <p><b>To rate this content you must mark as seen or favorite. </b></p>
+                {% endif %}
+                <div id="global_review">
+                    <p id="global_review_text">
+                        Global Rating {{ global_rating.rating__avg }}
+                    </p>
                 </div>
-                <div id="table_data">
-                    <table class="table" id="datatable_status">
-                        <thead>
+            </div>
+            <div id="table_data">
+                <table class="display" id="datatable_status">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="width: 25%;">Platform</th>
+                        <th scope="col" style="width: 25%;">URL</th>
+                        <th scope="col" style="width: 25%;">User</th>
+                        <th scope="col" style="width: 25%;">Options</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for s in content_links %}
                         <tr>
-                            <th scope="col" style="width: 25%;">Platform</th>
-                            <th scope="col" style="width: 25%;">URL</th>
-                            <th scope="col" style="width: 25%;">User</th>
-                            <th scope="col" style="width: 25%;">Options</th>
+                            <td>{{ s.content.title }}</td>
+                            <td>{{ s.type_select }}</td>
+                            <td>{{ s.date_last_update }}</td>
+                            <td>opciones</td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        {% for s in content_links %}
-                            <tr>
-                                <td>{{ s.content.title }}</td>
-                                <td>{{ s.type_select }}</td>
-                                <td>{{ s.date_last_update }}</td>
-                                <td>opciones</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -76,16 +92,32 @@
 {% block javascript %}
     <script>
         $(document).ready(function () {
-            if ({{ status_content.exists }} == 1
-        )
-            {
+            if ("{{ status_content.exists }}" === "1") {
                 document.getElementById('id_review').value = "{{ status_content.review }}";
                 document.getElementById('id_type').value = "{{ status_content.value }}";
             }
             var stars = new StarRating('.star-rating');
             $('#datatable_status').DataTable({
                 responsive: true,
-                autoWidth: false
+                autoWidth: false,
+                language: {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json"
+                }
+            });
+        });
+        $(function () {
+            $('#star_rating').on('change', function () {
+                var value = document.getElementById('star_rating').value;
+                $.ajax({
+                    url: '{% url 'content:rating' %}',
+                    data: {"rating": value, "content": "{{ object.id }}"},
+                    type: "GET",
+                    dataType: 'json',
+                    success: function (data) {
+                    },
+                    error: function (data) {
+                    }
+                });
             });
         });
 

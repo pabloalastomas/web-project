@@ -5,12 +5,12 @@ I want to update the status of the content.
     Background: There is a registered user
     Given Exists a user "user" with password "password"
 
-  Scenario: Update the content status
-    Given I login as user "user" with password "password"
-    When I update status
-      | status      |
-      | Watching    |
-    Then I'm viewing the status update for content by "user"
-      | status      |
-      | Watching    |
-    And The content has a status
+#  Scenario: Update the content status
+#    Given I login as user "user" with password "password"
+#    When I update status
+#      | status      |
+#      | Watching    |
+#    Then I'm viewing the status update for content by "user"
+#      | status      |
+#      | Watching    |
+#    And The content has a status

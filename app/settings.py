@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'behave_django',
     # Apps
-    'entertainment_db.apps.EntertainmentDbConfig'
+    'entertainment_db.apps.EntertainmentDbConfig',
+    'behave_django'
 ]
 
 MIDDLEWARE = [

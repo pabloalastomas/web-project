@@ -1,4 +1,6 @@
 from behave import *
+from django.contrib.auth.models import User
+from entertainment_db.models import StatusUserContent, Content
 
 use_step_matcher("parse")
 
@@ -21,6 +23,13 @@ def step_impl(context):
         context.browser.find_by_value('Save').click()
 
 
-@then('I\'m viewing the status update for content by "user"')
-def step_impl(context):
-    context.browser.visit('http://localhost:8000/profile/')
+@then('I\'m viewing the status update for content by "{user}"')
+def step_impl(context, user):
+    username = User.objects.get(username='admin')
+    print(username.get_username())
+    is_update = True
+    for row in context.table:
+        content = Content(title=row['film'])
+        status_user_content = StatusUserContent(user=username, content=content)
+        is_update = is_update and status_user_content.type == row['status']
+    assert is_update

@@ -18,9 +18,8 @@
     <div class="module">
         <br>
         {% if user.is_staff %}
-            <p><a class="button" href="{% url "admin:index" %}" target="_blank"> Admin Panel</a></p> {% endif %}
-        <p><a class="button" href="{% url 'content:rating' %}" target="_blank">Rating Content</a></p>
-        <p><a class="button" href="{% url 'content:rating' %}" target="_blank">Change Content Status</a></p>
+            <p><a class="button" href="{% url "admin:index" %}" target="_blank"> Admin Panel</a></p>
+        {% endif %}
     </div>
     <div class="module">
         <table class="display" id="datatable_status">

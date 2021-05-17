@@ -1,4 +1,5 @@
 from splinter.browser import Browser
+import django
 
 
 def before_all(context):

@@ -25,8 +25,7 @@ def step_impl(context):
 
 @then('I\'m viewing the status update for content by "{user}"')
 def step_impl(context, user):
-    username = User.objects.get(username='admin')
-    print(username.get_username())
+    username = User.objects.get(user)
     is_update = True
     for row in context.table:
         content = Content(title=row['film'])

@@ -260,17 +260,17 @@ ul#course-modules li:hover {
 }
 
 .select2-container {
-    position: relative;
-    top: 10%;
+    position: absolute;
+    top: 7%;
     left: 60%;
-    margin: 10px;
+    margin-top: 10px;
     border-radius: 5px;
 
 }
 
 #search_button {
     position: absolute;
-    margin-top: 5px;
+    margin-top: 16px;
     left: 80%;
     align-content: end;
     width: 70px;
@@ -287,7 +287,7 @@ ul#course-modules li:hover {
 
 }
 .left_div {
-    padding: 40px 60px;
+    padding:50px 100px;
 }
 
 .right_div {

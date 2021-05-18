@@ -38,7 +38,7 @@
                     <td><a href="{% url 'content:info' s.content.pk %}" target="_blank">{{ s.content.title }}</a></td>
                     <td>{{ s.type_select }}</td>
                     <td>{{ s.date_last_update }}</td>
-                    <td><a class="button" href="{% url 'content:delete-status' s.pk %}">Detele</a></td>
+                    <td><a class="button" href="{% url 'content:delete-status' s.pk %}">Delete</a></td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -59,7 +59,7 @@
                     <td><a href="{% url 'content:info' r.content.pk %}" target="_blank">{{ r.content.title }}</a></td>
                     <td>{{ r.rating }}</td>
                     <td>{{ r.date_last_update }}</td>
-                    <td><a class="button" href="{% url 'content:delete-rating' r.pk %}">Detele</a></td>
+                    <td><a class="button" href="{% url 'content:delete-rating' r.pk %}">Delete</a></td>
                 </tr>
             {% endfor %}
             </tbody>

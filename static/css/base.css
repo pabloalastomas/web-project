@@ -279,42 +279,50 @@ ul#course-modules li:hover {
 #content .box {
     display: table;
 }
+
 #content .box .box-row {
     display: table-row;
 }
+
 #content .box .box-cell {
     display: table-cell;
 
 }
+
 .left_div {
-    padding:50px 100px;
+    padding: 50px 100px;
 }
 
 .right_div {
     padding: 40px 60px;
 }
+
 #synopsis {
     position: absolute;
     top: 20%;
     left: 30%;
 }
+
 #airdate {
     position: absolute;
-    top:40%;
+    top: 40%;
     left: 30%;
 
 }
+
 #rating_stars {
     position: absolute;
-    top:50%;
+    top: 50%;
     left: 30%;
 }
+
 #global_review {
     position: absolute;
-    top:50%;
+    top: 50%;
     left: 50%;
 }
-#table_data{
+
+#table_data {
     position: absolute;
     top: 70%;
     left: 30%;

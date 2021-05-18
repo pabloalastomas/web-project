@@ -268,19 +268,28 @@ table.dataTable, table.dataTable th, table.dataTable td {
     position: relative;
     clear: both;
     *zoom: 1;
-    zoom: 1
+    zoom: 1;
+    margin-bottom: 70px;
+    margin-top: 40px;
 }
 
 .dataTables_wrapper .dataTables_length {
-    float: left
+    float: left;
+    margin-bottom: 20px;
+    margin-left: 33px;
 }
 
 .dataTables_wrapper .dataTables_length select {
+    position: absolute;
+    top: -6px;
+    left: 140px;
     border: 1px solid #aaa;
     border-radius: 3px;
     padding: 5px;
     background-color: transparent;
-    padding: 4px
+    padding: 4px;
+    width: 60px;
+    margin-right: 15px;
 }
 
 .dataTables_wrapper .dataTables_filter {
@@ -293,7 +302,8 @@ table.dataTable, table.dataTable th, table.dataTable td {
     border-radius: 3px;
     padding: 5px;
     background-color: transparent;
-    margin-left: 3px
+    margin: -5px;
+    margin-left: 15px;
 }
 
 .dataTables_wrapper .dataTables_info {
@@ -451,4 +461,9 @@ table.dataTable, table.dataTable th, table.dataTable td {
     .dataTables_wrapper .dataTables_filter {
         margin-top: .5em
     }
+}
+
+input[type=search] {
+    float: right;
+    margin-top: 10px;
 }

@@ -287,7 +287,36 @@ ul#course-modules li:hover {
 
 }
 .left_div {
-    padding: 40px;
+    padding: 40px 60px;
 }
 
+.right_div {
+    padding: 40px 60px;
+}
+#synopsis {
+    position: absolute;
+    top: 20%;
+    left: 30%;
+}
+#airdate {
+    position: absolute;
+    top:40%;
+    left: 30%;
+
+}
+#rating_stars {
+    position: absolute;
+    top:50%;
+    left: 30%;
+}
+#global_review {
+    position: absolute;
+    top:50%;
+    left: 50%;
+}
+#table_data{
+    position: absolute;
+    top: 70%;
+    left: 30%;
+}
 

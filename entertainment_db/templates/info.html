@@ -35,14 +35,17 @@
             </div>
             <div class="box-cell right_div">
                 <div id="synopsis">
+                    <h3>Synopsis</h3>
                     {{ object.synopsis }} <br>
                 </div>
                 <div id="airdate">
-                    <p>Airdate</p>
+                    <h3>Airdate</h3>
                     {{ object.airdate }} <br>
                 </div>
                 {% if status_content.value in "bc" %}
+
                     <div id="rating_stars">
+                    <h3>Your Rating</h3>
                         <select class="star-rating" id="star_rating">
                             <option value="0">Select a rating</option>
                             {% for i in '54321'|make_list %}
@@ -58,9 +61,8 @@
                     <p><b>To rate this content you must mark as seen or favorite. </b></p>
                 {% endif %}
                 <div id="global_review">
-                    <p id="global_review_text">
-                        Global Rating {{ global_rating.rating__avg }}
-                    </p>
+
+                       <h3>Global Rating</h3>  {{ global_rating.rating__avg }}
                 </div>
             </div>
             <div id="table_data">

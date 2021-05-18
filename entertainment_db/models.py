@@ -80,7 +80,8 @@ class IntegerRangeField(models.IntegerField):
 
 class Assessment(models.Model):
     RATING_CHOICES = ((1, 'one'), (2, 'two'), (3, 'three'), (4, 'four'), (5, 'five'))
-    rating = models.PositiveSmallIntegerField(verbose_name='Rating (stars)', blank=False, default=3, choices=RATING_CHOICES)
+    rating = models.PositiveSmallIntegerField(verbose_name='Rating (stars)', blank=False, default=3,
+                                              choices=RATING_CHOICES)
     content = models.ForeignKey(Content, on_delete=models.CASCADE, verbose_name='Content to assessment')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='User')
     # value = IntegerRangeField(verbose_name='Rating', min_value=0, max_value=5)
@@ -118,7 +119,7 @@ class StatusUserContent(models.Model):
     type_select.short_description = 'Status Type'
 
     def __str__(self):
-        return self.content.title
+        return f"{self.type_select()} - {self.content.title}"
 
     class Meta:
         verbose_name = 'User Content Relation'

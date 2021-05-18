@@ -43,9 +43,8 @@
                     {{ object.airdate }} <br>
                 </div>
                 {% if status_content.value in "bc" %}
-
                     <div id="rating_stars">
-                    <h3>Your Rating</h3>
+                        <h3>Your Rating</h3>
                         <select class="star-rating" id="star_rating">
                             <option value="0">Select a rating</option>
                             {% for i in '54321'|make_list %}
@@ -58,30 +57,52 @@
                         </select>
                     </div>
                 {% else %}
-                    <p><b>To rate this content you must mark as seen or favorite. </b></p>
+                    <div id="rating_stars">
+                        <h3>Your Rating</h3>
+                        <select class="star-rating" id="star_rating" disabled>
+                            <option value="0">Select a rating</option>
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
+                        <p>To rate this content you must mark as <b>watched or favorite</b>. </p>
+                    </div>
                 {% endif %}
                 <div id="global_review">
-
-                       <h3>Global Rating</h3>  {{ global_rating.rating__avg }}
+                    <h3>Global Rating</h3>
+                    {% if global_rating.rating__avg %}
+                        {{ global_rating.rating__avg|floatformat:"2" }}
+                    {% else %}
+                        <p>No existing rating</p>
+                    {% endif %}
                 </div>
             </div>
             <div id="table_data">
-                <table class="display" id="datatable_status">
+                <a class="button" href="{% url 'content:add_in_platform' object.pk %}">Add Link</a>
+                <table class="cell-border" id="datatable_links">
                     <thead>
                     <tr>
-                        <th scope="col" style="width: 25%;">Platform</th>
-                        <th scope="col" style="width: 25%;">URL</th>
-                        <th scope="col" style="width: 25%;">User</th>
-                        <th scope="col" style="width: 25%;">Options</th>
+                        <th scope="col" style="width: 10%;">Platform</th>
+                        <th scope="col" style="width: 60%;">URL</th>
+                        <th scope="col" style="width: 10%;">User</th>
+                        <th scope="col" style="width: 20%;">Options</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for s in content_links %}
+                    {% for c in content_links %}
                         <tr>
-                            <td>{{ s.content.title }}</td>
-                            <td>{{ s.type_select }}</td>
-                            <td>{{ s.date_last_update }}</td>
-                            <td>opciones</td>
+                            <td>{{ c.platform.name }}</td>
+                            <td><a href="{{ c.url }}">{{ c.url }}</a></td>
+                            <td>{{ c.user.username }}</td>
+                            {% if user.pk == c.user.pk %}
+                                <td><a class="button" href="{% url 'content:delete_in_platform' c.pk %}">Detele link</a>
+                                </td>
+                            {% else %}
+                                <td>No options.</td>
+                            {% endif %}
+
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -99,7 +120,7 @@
                 document.getElementById('id_type').value = "{{ status_content.value }}";
             }
             var stars = new StarRating('.star-rating');
-            $('#datatable_status').DataTable({
+            $('#datatable_links').DataTable({
                 responsive: true,
                 autoWidth: false,
                 language: {
@@ -122,6 +143,5 @@
                 });
             });
         });
-
     </script>
 {% endblock %}

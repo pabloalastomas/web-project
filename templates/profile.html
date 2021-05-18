@@ -22,7 +22,8 @@
         {% endif %}
     </div>
     <div class="module">
-        <table class="display" id="datatable_status">
+        <h3>My Status</h3>
+        <table class="cell-border" id="datatable_status">
             <thead>
             <tr>
                 <th scope="col" style="width: 25%;">Title</th>
@@ -34,15 +35,16 @@
             <tbody>
             {% for s in user_status %}
                 <tr>
-                    <td>{{ s.content.title }}</td>
+                    <td><a href="{% url 'content:info' s.content.pk %}" target="_blank">{{ s.content.title }}</a></td>
                     <td>{{ s.type_select }}</td>
                     <td>{{ s.date_last_update }}</td>
-                    <td>opciones</td>
+                    <td><a class="button" href="{% url 'content:delete-status' s.pk %}">Detele</a></td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <table class="display" id="datatable_ratings">
+        <h3>My Ratings</h3>
+        <table class="cell-border" id="datatable_ratings">
             <thead>
             <tr>
                 <th scope="col" style="width: 25%;">Title</th>
@@ -54,10 +56,10 @@
             <tbody>
             {% for r in user_ratings %}
                 <tr>
-                    <td>{{ r.content.title }}</td>
+                    <td><a href="{% url 'content:info' r.content.pk %}" target="_blank">{{ r.content.title }}</a></td>
                     <td>{{ r.rating }}</td>
                     <td>{{ r.date_last_update }}</td>
-                    <td>opciones</td>
+                    <td><a class="button" href="{% url 'content:delete-rating' r.pk %}">Detele</a></td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -22,10 +22,13 @@ app_name = 'content'
 urlpatterns = [
     path('search/', search_bar, name='content_search'),
     path('search/go/', search_bar_redirect, name='content_search_go'),
-    path('rating/', rating, name='rating'),
+    path('rating/create/', rating, name='rating'),
+    path('rating/delete/<int:pk>/', AssesmentDeleteView.as_view(), name='delete-rating'),
     path('info/<int:pk>/', ContentDetailView.as_view(), name='info'),
-    path('update-status/<int:content_id>/', update_status, name='update-status'),
+    path('status/update/<int:content_id>/', update_status, name='update-status'),
+    path('status/delete/<int:pk>/', StatusDeleteView.as_view(), name='delete-status'),
     path('platform/add/<int:id>/', PlatformContentCreateView.as_view(), name='add_in_platform'),
+    path('platform/add/', PlatformContentCreateView.as_view(), name='add_in_platform_all'),
     path('platform/delete/<int:pk>/', PlatformContentDeleteView.as_view(), name='delete_in_platform'),
 
 ]

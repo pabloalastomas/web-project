@@ -84,10 +84,14 @@ def search_bar_redirect(request):
         if not content:
             response = requests.get(f'http://www.omdbapi.com/?i={id_content}&apikey=329c0d5e').json()
             if response['Poster'] == "N/A":
-                poster = "https://gaprastore.com/wp-content/uploads/2020/12/no_image-1.jpg"
+                poster = "https://codoacodo.app/sites/default/files/img/product/noimage.jpg"
             else:
                 poster = response['Poster']
-            content = Content.objects.create(title=response['Title'], synopsis=response['Plot'],
+            if response['Plot'] == "N/A":
+                plot = "Synopsis not available."
+            else:
+                plot = response['Plot']
+            content = Content.objects.create(title=response['Title'], synopsis=plot,
                                              airdate=datetime.strptime(response['Released'], "%d %b %Y"),
                                              type=response['Type'], id_in_api=id_content, poster_url=poster)
             content.save()
@@ -128,13 +132,14 @@ class ContentDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         actual_status = StatusUserContent.objects.filter(user=self.request.user, content__pk=self.object.pk)
         if actual_status:
-            context['status_content'] = {'exists': 1, 'value': str(actual_status[0].type), 'review': actual_status[0].review}
+            context['status_content'] = {'exists': 1, 'value': str(actual_status[0].type),
+                                         'review': actual_status[0].review}
         actual_rating = Assessment.objects.filter(user=self.request.user, content__pk=self.object.pk)
         if actual_rating:
             context['status_rating'] = {'exists': True, 'value': str(actual_rating[0].rating)}
         context['status_form'] = StatusUserContentForm()
-        context['global_rating'] = Assessment.objects.all().aggregate(Avg('rating'))
-        context['links'] = PlatformContent.objects.filter(content__pk=self.object.pk)
+        context['global_rating'] = Assessment.objects.filter(content__pk=self.object.pk).aggregate(Avg('rating'))
+        context['content_links'] = PlatformContent.objects.filter(content__pk=self.object.pk)
         return context
 
 
@@ -142,7 +147,6 @@ class PlatformContentCreateView(CreateView):
     model = PlatformContent
     form_class = PlatformContentForm
     template_name = 'form.html'
-    success_url = reverse_lazy('profile')
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -150,12 +154,20 @@ class PlatformContentCreateView(CreateView):
 
     def get_form(self, **kwargs):
         form = super().get_form(**kwargs)
-        if self.kwargs['id']:
-            content = Content.objects.get(id=self.kwargs['id'])
-            form.fields['content'].initial = content
+        try:
+            if self.kwargs['id']:
+                content = Content.objects.get(id=self.kwargs['id'])
+                form.fields['content'].initial = content
             form.fields['user'].initial = self.request.user
             form.fields['user'].disabled = True
-        return form
+            return form
+        except:
+            form.fields['user'].initial = self.request.user
+            form.fields['user'].disabled = True
+            return form
+
+    def get_success_url(self):
+        return reverse_lazy('content:info', kwargs={'pk': self.kwargs['id']})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -166,9 +178,7 @@ class PlatformContentCreateView(CreateView):
 
 class PlatformContentDeleteView(DeleteView):
     model = PlatformContent
-    form_class = PlatformContentForm
     template_name = 'delete.html'
-    success_url = reverse_lazy('profile')
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -178,8 +188,50 @@ class PlatformContentDeleteView(DeleteView):
         else:
             return HttpResponseForbidden()
 
+    def get_success_url(self):
+        return reverse_lazy('content:info', kwargs={'pk': self.kwargs['pk']})
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Título de la Página
         context['title'] = 'Delete link from a streaming platform'
+        return context
+
+
+class AssesmentDeleteView(DeleteView):
+    model = Assessment
+    template_name = 'delete.html'
+    success_url = reverse_lazy('profile')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        content = Assessment.objects.get(pk=self.kwargs['pk'])
+        if content.user == request.user:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Título de la Página
+        context['title'] = 'Delete rating'
+        return context
+
+
+class StatusDeleteView(DeleteView):
+    model = StatusUserContent
+    template_name = 'delete.html'
+    success_url = reverse_lazy('profile')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        content = StatusUserContent.objects.get(pk=self.kwargs['pk'])
+        if content.user == request.user:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Delete status'
         return context

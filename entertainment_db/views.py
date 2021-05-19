@@ -154,17 +154,13 @@ class PlatformContentCreateView(CreateView):
 
     def get_form(self, **kwargs):
         form = super().get_form(**kwargs)
-        try:
-            if self.kwargs['id']:
-                content = Content.objects.get(id=self.kwargs['id'])
-                form.fields['content'].initial = content
-            form.fields['user'].initial = self.request.user
-            form.fields['user'].disabled = True
-            return form
-        except:
-            form.fields['user'].initial = self.request.user
-            form.fields['user'].disabled = True
-            return form
+        if self.kwargs['id']:
+            content = Content.objects.get(id=self.kwargs['id'])
+            form.fields['content'].initial = content
+            form.fields['content'].disabled = True
+        form.fields['user'].initial = self.request.user
+        form.fields['user'].disabled = True
+        return form
 
     def get_success_url(self):
         return reverse_lazy('content:info', kwargs={'pk': self.kwargs['id']})

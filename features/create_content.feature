@@ -46,7 +46,7 @@ Feature: Create Content
   @create_link
   Scenario: Create the content platform link
     Given I login as user "user" with password "webproject"
-    When Exists streaming platforms
+    And Exists streaming platforms
       | platform           |
       | Disney +           |
       | Netflix            |

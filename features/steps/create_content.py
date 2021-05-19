@@ -93,7 +93,7 @@ def step_impl(context, username):
     assert is_update
 
 
-@when("Exists streaming platforms")
+@step("Exists streaming platforms")
 def step_impl(context):
     for row in context.table:
         StreamingPlatforms.objects.create(name=row["platform"])

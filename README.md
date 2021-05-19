@@ -1,5 +1,5 @@
 # Web Project Entertainment DB
-[![Heroku App Status](https://heroku-shields.herokuapp.com/entertainment-db-udl)](https://entertainment-db-udl.herokuapp.com)
+[![Heroku App Status](https://heroku-shields.herokuapp.com/web-project-entertainment-db)](https://web-project-entertainment-db.herokuapp.com)
 ### Run/deploy the project:  
 - Heroku: https://entertainment-db-udl.herokuapp.com/
 - Docker: *docker-compose.yml*

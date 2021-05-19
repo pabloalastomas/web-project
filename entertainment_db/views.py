@@ -112,6 +112,10 @@ def update_status(request, content_id):
                 if review:
                     actual_status[0].review = review
                 actual_status[0].save()
+                if status not in 'bc':
+                    rating = Assessment.objects.filter(user=request.user, content__pk=content_id)
+                    if rating:
+                        rating[0].delete()
             else:
                 return HttpResponseForbidden()
         else:
@@ -167,7 +171,6 @@ class PlatformContentCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Título de la Página
         context['title'] = 'Add link to a streaming platform'
         return context
 
@@ -189,7 +192,6 @@ class PlatformContentDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Título de la Página
         context['title'] = 'Delete link from a streaming platform'
         return context
 
@@ -209,7 +211,6 @@ class AssesmentDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Título de la Página
         context['title'] = 'Delete rating'
         return context
 
@@ -217,7 +218,6 @@ class AssesmentDeleteView(DeleteView):
 class StatusDeleteView(DeleteView):
     model = StatusUserContent
     template_name = 'delete.html'
-    success_url = reverse_lazy('profile')
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -226,6 +226,14 @@ class StatusDeleteView(DeleteView):
             return super().dispatch(request, *args, **kwargs)
         else:
             return HttpResponseForbidden()
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        rating = Assessment.objects.filter(user=request.user, content__pk=self.object.content.pk)
+        if rating:
+            rating[0].delete()
+        self.object.delete()
+        return redirect(reverse_lazy('profile'))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

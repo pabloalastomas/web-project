@@ -1,6 +1,8 @@
 import time
-
+from datetime import datetime
 from behave import *
+from pip._vendor import requests
+
 from entertainment_db.models import *
 
 use_step_matcher("parse")
@@ -124,3 +126,25 @@ def step_impl(context, username):
         platform_content = PlatformContent.objects.get(user=user, content=content, platform=platform)
         is_update = is_update and platform_content.url == row['link']
     assert is_update
+
+
+@step('Exist content registered by "{username}"')
+def step_impl(context, username):
+    for row in context.table:
+        user = User.objects.get(username=username)
+        content = create_content_model(row['film'])
+        streaming_platform = StreamingPlatforms.objects.get(name=row['platform'])
+        PlatformContent.objects.create(content=content, platform=streaming_platform, user=user, url=row['link'])
+        Assessment.objects.create(user=user, content=content, rating=row['rating'])
+        StatusUserContent.objects.create(user=user, content=content, review=row['review'],
+                                         type=status_values[row['status']])
+
+
+def create_content_model(film):
+    response = requests.get(f'https://www.omdbapi.com/?t={film}&apikey=329c0d5e').json()
+
+    content = Content.objects.create(title=response['Title'], synopsis=response['Plot'],
+                                     airdate=datetime.strptime(response['Released'], "%d %b %Y"),
+                                     type=response['Type'], id_in_api=response['imdbID'], poster_url=response['Poster'])
+    content.save()
+    return content

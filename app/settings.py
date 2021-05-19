@@ -27,7 +27,7 @@ SECRET_KEY = '+43705!-og=^x!3&e#du=tn(khz*=vk!)$ury#6j+sbyym%(!7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["web-project-entertainment-db.herokuapp.com"]
 
 # Application definition
 

@@ -130,3 +130,5 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = reverse_lazy('profile')
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

@@ -6,6 +6,7 @@ Feature: Create Content
   Background: There is a registered user
     Given Exists a user "user" with password "webproject"
 
+  @create_status
   Scenario: Create the content status
     Given I login as user "user" with password "webproject"
     When I create the status
@@ -18,6 +19,7 @@ Feature: Create Content
       | Doctor Strange |  | Favourite |
     And There are 2 content in DB.
 
+  @create_review
   Scenario: Create the content review
     Given I login as user "user" with password "webproject"
     When I create the review
@@ -29,4 +31,32 @@ Feature: Create Content
       | Coco           |  | Watching  |  | Amazing film!           |
       | Doctor Strange |  | Favourite |  | I love Sorcerer Supreme |
 
-  Scenario: Create rating
+  @create_rating
+  Scenario: Create the content rating
+    Given I login as user "user" with password "webproject"
+    When I create the rating
+      | film           |  | status    |  | rating |
+      | Coco           |  | Watched   |  | 4      |
+      | Doctor Strange |  | Favourite |  | 5      |
+    Then I'm viewing the rating created for content by "user"
+      | film           |  | status    |  | rating |
+      | Coco           |  | Watched   |  | 4      |
+      | Doctor Strange |  | Favourite |  | 5      |
+
+  @create_link
+  Scenario: Create the content platform link
+    Given I login as user "user" with password "webproject"
+    And Exists streaming platforms
+      | platform           |
+      | Disney +           |
+      | Netflix            |
+      | HBO                |
+      | Amazon Prime Video |
+    Then I create the platform link
+      | film           |  | link                    |  | platform |
+      | Doctor Strange |  | https://cutt.ly/eb0z5Gs |  | Disney + |
+      | Inception      |  | https://cutt.ly/Xb0xy0m |  | Netflix  |
+    Then I'm viewing the platform link created for content by "user"
+      | film           |  | link                    |  | platform |
+      | Doctor Strange |  | https://cutt.ly/eb0z5Gs |  | Disney + |
+      | Inception      |  | https://cutt.ly/Xb0xy0m |  | Netflix  |

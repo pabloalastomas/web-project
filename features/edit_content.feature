@@ -12,6 +12,15 @@ Feature: Edit Content
       | HBO                |
       | Amazon Prime Video |
     And Exist content registered by "user"
-      | film           |  | status    |  | review                  |  | platform |  | link                    |
-      | Inception      |  | Watched   |  | Amazing !               |  | Netflix  |  | https://cutt.ly/Xb0xy0m |
-      | Doctor Strange |  | Favourite |  | I love Sorcerer Supreme |  | Disney + |  | https://cutt.ly/eb0z5Gs |
+      | film           |  | status    |  | rating |  | review                  |  | platform |  | link                    |
+      | Inception      |  | Watched   |  | 5      |  | Amazing !               |  | Netflix  |  | https://cutt.ly/Xb0xy0m |
+      | Doctor Strange |  | Favourite |  | 5      |  | I love Sorcerer Supreme |  | Disney + |  | https://cutt.ly/eb0z5Gs |
+
+
+  @edit_status
+  Scenario: Edit status content
+    Given I login as user "user" with password "webproject"
+    When I edit the status content
+      | film           |  | status    |
+      | Inception      |  | Pending   |
+      | Doctor Strange |  | Watched |

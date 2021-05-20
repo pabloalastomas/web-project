@@ -138,5 +138,5 @@ LOGIN_REDIRECT_URL = reverse_lazy('profile')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-if config('DJANGO_PRODUCTION_ENV', default=False, cast=bool):
+if config('DJANGO_PRODUCTION', default=False, cast=bool):
     from .settings_production import *

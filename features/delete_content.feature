@@ -36,3 +36,6 @@ Feature: Delete Content
       | Inception      |
       | Doctor Strange |
       Then I'm viewing not exist the platform link of the "user"
+      | film           |
+      | Inception      |
+      | Doctor Strange |

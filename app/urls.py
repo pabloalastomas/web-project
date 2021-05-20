@@ -18,13 +18,14 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from entertainment_db.views import UserRegistrationView, UserProfileView
 from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('register/', UserRegistrationView.as_view(), name='register'),
-    path('profile/', UserProfileView.as_view(), name='profile'),
-    path('content/', include('entertainment_db.urls')),
+                  path('admin/', admin.site.urls),
+                  path('', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
+                  path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+                  path('register/', UserRegistrationView.as_view(), name='register'),
+                  path('profile/', UserProfileView.as_view(), name='profile'),
+                  path('content/', include('entertainment_db.urls')),
 
-]
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

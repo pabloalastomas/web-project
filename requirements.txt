@@ -6,3 +6,5 @@ behave
 splinter
 pip
 decouple
+psycopg2==2.7.4
+whitenoise

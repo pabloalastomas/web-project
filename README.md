@@ -2,7 +2,7 @@
 [![Heroku App Status](https://heroku-shields.herokuapp.com/web-project-entertainment-db)](https://web-project-entertainment-db.herokuapp.com)
 ### Run/deploy the project:  
 - Heroku: https://entertainment-db-udl.herokuapp.com/
-- Docker: *docker-compose.yml*
+- Docker: *docker-compose up -d*
 
 ### Credentials (user / pasword):  
 - Admin User: *admin / webproject*

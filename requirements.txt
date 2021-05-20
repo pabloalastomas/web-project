@@ -5,6 +5,6 @@ behave-django
 behave
 splinter
 pip
-decouple
+python-decouple
 psycopg2
 whitenoise

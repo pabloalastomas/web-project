@@ -126,7 +126,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = reverse_lazy('profile')
@@ -135,4 +135,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 if config('DJANGO_PRODUCTION', default=False, cast=bool):
     from .settings_production import *
-#

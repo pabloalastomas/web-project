@@ -3,6 +3,14 @@ from behave import *
 use_step_matcher("parse")
 
 
+def goto_content_info(context, film):
+    context.browser.visit(context.get_url('/profile'))
+    context.browser.find_by_id('select2-search_bar-container').click()
+    context.browser.find_by_css('input.select2-search__field').fill(film)
+    context.browser.find_by_css('.select2-result-repository__title').click()
+    context.browser.find_by_id('search_button').click()
+
+
 @then('I\'m viewing the list of content')
 def step_impl(context):
     is_presents = True
@@ -15,6 +23,10 @@ def step_impl(context):
 @then('I\'m viewing the global rating for the content')
 def step_impl(context):
     context.browser.visit(context.get_url('/profile'))
+    for row in context.table:
+        goto_content_info(context, row['film'])
+        a = context.browser.find_by_id('global_review')
+        print(a)
 
 
 @then('I\'m viewing the platform added by an other user for a specific content')

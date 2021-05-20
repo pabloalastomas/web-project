@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '+43705!-og=^x!3&e#du=tn(khz*=vk!)$ury#6j+sbyym%(!7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["entertainment-db-udl.herokuapp.com", '127.0.0.1', 'localhost']
 

@@ -13,7 +13,7 @@ Feature: Create Content
       | film           |  | status    |
       | Coco           |  | Watching  |
       | Doctor Strange |  | Favourite |
-    Then I'm viewing the status created for content by "user"
+    Then I'm viewing the content status of the "user"
       | film           |  | status    |
       | Coco           |  | Watching  |
       | Doctor Strange |  | Favourite |
@@ -26,7 +26,7 @@ Feature: Create Content
       | film           |  | status    |  | review                  |
       | Coco           |  | Watching  |  | Amazing film!           |
       | Doctor Strange |  | Favourite |  | I love Sorcerer Supreme |
-    Then I'm viewing the review created for content by "user"
+    Then I'm viewing the content review of the "user"
       | film           |  | status    |  | review                  |
       | Coco           |  | Watching  |  | Amazing film!           |
       | Doctor Strange |  | Favourite |  | I love Sorcerer Supreme |
@@ -38,7 +38,7 @@ Feature: Create Content
       | film           |  | status    |  | rating |
       | Coco           |  | Watched   |  | 4      |
       | Doctor Strange |  | Favourite |  | 5      |
-    Then I'm viewing the rating created for content by "user"
+    Then I'm viewing the content rating of the "user"
       | film           |  | status    |  | rating |
       | Coco           |  | Watched   |  | 4      |
       | Doctor Strange |  | Favourite |  | 5      |
@@ -56,7 +56,7 @@ Feature: Create Content
       | film           |  | link                    |  | platform |
       | Doctor Strange |  | https://cutt.ly/eb0z5Gs |  | Disney + |
       | Inception      |  | https://cutt.ly/Xb0xy0m |  | Netflix  |
-    Then I'm viewing the platform link created for content by "user"
+    Then I'm viewing the content platform link of the "user"
       | film           |  | link                    |  | platform |
       | Doctor Strange |  | https://cutt.ly/eb0z5Gs |  | Disney + |
       | Inception      |  | https://cutt.ly/Xb0xy0m |  | Netflix  |

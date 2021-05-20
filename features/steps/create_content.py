@@ -27,7 +27,7 @@ def step_impl(context):
         context.browser.find_by_value('Save').click()
 
 
-@then('I\'m viewing the status created for content by "{username}"')
+@then('I\'m viewing the content status of the "{username}"')
 def step_impl(context, username):
     from django.contrib.auth.models import User
     user = User.objects.get(username=username)
@@ -57,7 +57,7 @@ def step_impl(context):
         context.browser.find_by_value('Save').click()
 
 
-@then('I\'m viewing the review created for content by "{username}"')
+@then('I\'m viewing the content review of the "{username}"')
 def step_impl(context, username):
     from django.contrib.auth.models import User
     user = User.objects.get(username=username)
@@ -83,7 +83,7 @@ def step_impl(context):
         context.browser.find_by_value('Save').click()
 
 
-@then('I\'m viewing the rating created for content by "{username}"')
+@then('I\'m viewing the content rating of the "{username}"')
 def step_impl(context, username):
     from django.contrib.auth.models import User
     user = User.objects.get(username=username)
@@ -115,7 +115,7 @@ def step_impl(context):
         context.browser.find_by_value('Save').click()
 
 
-@then('I\'m viewing the platform link created for content by "{username}"')
+@then('I\'m viewing the content platform link of the "{username}"')
 def step_impl(context, username):
     from django.contrib.auth.models import User
     user = User.objects.get(username=username)

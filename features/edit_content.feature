@@ -18,9 +18,37 @@ Feature: Edit Content
 
 
   @edit_status
-  Scenario: Edit status content
+  Scenario: Edit content status
     Given I login as user "user" with password "webproject"
-    When I edit the status content
-      | film           |  | status    |
-      | Inception      |  | Pending   |
+    When I edit the status
+      | film           |  | status  |
+      | Inception      |  | Pending |
       | Doctor Strange |  | Watched |
+    Then I'm viewing the content status of the "user"
+      | film           |  | status  |
+      | Inception      |  | Pending |
+      | Doctor Strange |  | Watched |
+
+  @edit_review
+  Scenario: Edit content review
+    Given I login as user "user" with password "webproject"
+    When I edit the review
+      | film           |  | review        |
+      | Inception      |  | Incredible    |
+      | Doctor Strange |  | I love MARVEL |
+    Then I'm viewing the content review of the "user"
+      | film           |  | review        |
+      | Inception      |  | Incredible    |
+      | Doctor Strange |  | I love MARVEL |
+
+  @edit_rating
+  Scenario: Edit content rating
+    Given I login as user "user" with password "webproject"
+    When I edit the rating
+      | film           |  | rating |
+      | Inception      |  | 2      |
+      | Doctor Strange |  | 4      |
+    Then I'm viewing the content rating of the "user"
+      | film           |  | rating |
+      | Inception      |  | 2      |
+      | Doctor Strange |  | 4      |

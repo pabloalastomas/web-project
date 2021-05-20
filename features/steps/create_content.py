@@ -15,14 +15,18 @@ status_values = {
 }
 
 
+def goto_content_info(context, film):
+    context.browser.visit(context.get_url('/profile'))
+    context.browser.find_by_id('select2-search_bar-container').click()
+    context.browser.find_by_css('input.select2-search__field').fill(film)
+    context.browser.find_by_css('.select2-result-repository__title').click()
+    context.browser.find_by_id('search_button').click()
+
+
 @when("I create the status")
 def step_impl(context):
     for row in context.table:
-        context.browser.visit(context.get_url('/profile'))
-        context.browser.find_by_id('select2-search_bar-container').click()
-        context.browser.find_by_css('input.select2-search__field').fill(row['film'])
-        context.browser.find_by_css('.select2-result-repository__title').click()
-        context.browser.find_by_id('search_button').click()
+        goto_content_info(context, film=row['film'])
         context.browser.find_by_id('id_type').find_by_value(status_values[row['status']]).click()
         context.browser.find_by_value('Save').click()
 
@@ -47,11 +51,7 @@ def step_impl(context, count):
 @when("I create the review")
 def step_impl(context):
     for row in context.table:
-        context.browser.visit(context.get_url('/profile'))
-        context.browser.find_by_id('select2-search_bar-container').click()
-        context.browser.find_by_css('input.select2-search__field').fill(row['film'])
-        context.browser.find_by_css('.select2-result-repository__title').click()
-        context.browser.find_by_id('search_button').click()
+        goto_content_info(context, film=row['film'])
         context.browser.find_by_id('id_type').find_by_value(status_values[row['status']]).click()
         context.browser.fill('review', row['review'])
         context.browser.find_by_value('Save').click()
@@ -72,11 +72,7 @@ def step_impl(context, username):
 @when("I create the rating")
 def step_impl(context):
     for row in context.table:
-        context.browser.visit(context.get_url('/profile'))
-        context.browser.find_by_id('select2-search_bar-container').click()
-        context.browser.find_by_css('input.select2-search__field').fill(row['film'])
-        context.browser.find_by_css('.select2-result-repository__title').click()
-        context.browser.find_by_id('search_button').click()
+        goto_content_info(context, film=row['film'])
         context.browser.find_by_id('id_type').find_by_value(status_values[row['status']]).click()
         context.browser.find_by_value('Save').click()
         context.browser.find_by_css(f'span[data-value="{row["rating"]}"]').click()
@@ -104,11 +100,7 @@ def step_impl(context):
 @then("I create the platform link")
 def step_impl(context):
     for row in context.table:
-        context.browser.visit(context.get_url('/profile'))
-        context.browser.find_by_id('select2-search_bar-container').click()
-        context.browser.find_by_css('input.select2-search__field').fill(row['film'])
-        context.browser.find_by_css('.select2-result-repository__title').click()
-        context.browser.find_by_id('search_button').click()
+        goto_content_info(context, row['film'])
         context.browser.find_by_text('Add Link').click()
         context.browser.find_by_id('id_platform').find_by_text(row['platform']).click()
         context.browser.fill("url", row['link'])

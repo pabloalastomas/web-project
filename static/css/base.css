@@ -261,19 +261,16 @@ ul#course-modules li:hover {
 
 .select2-container {
     position: absolute;
-    top: 7%;
-    left: 60%;
+    top: 16px;
     margin-top: 10px;
     border-radius: 5px;
 
 }
 
 #search_button {
-    position: absolute;
-    margin-top: 15px;
-    left: 80%;
-    align-content: end;
     width: 70px;
+    position: absolute;
+    left: 350px;
 }
 
 #content .box {
@@ -299,37 +296,45 @@ ul#course-modules li:hover {
 
 #synopsis {
     position: absolute;
-    top: 20%;
-    left: 30%;
+    top: 170px;
+    left: 455px;
 }
 
 #airdate {
     position: absolute;
-    top: 40%;
-    left: 30%;
-
+    top: 330px;
+    left: 455px;
 }
 
 #rating_stars {
     position: absolute;
-    top: 50%;
-    left: 30%;
+    top: 420px;
+    left: 455px;
 }
 
 #global_review {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 420px;
+    left: 700px;
 }
 
 #table_data {
     position: absolute;
-    top: 70%;
-    left: 30%;
+    top: 600px;
+    left: 450px;
 }
 
 #search_bar {
     position: absolute;
     top: 12%;
     left: 68%;
+}
+
+#add_link {
+    position: absolute;
+    top: -77px;
+}
+#searchbar_full {
+    position: absolute;
+    left: 60%;
 }

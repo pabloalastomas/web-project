@@ -21,7 +21,7 @@
         <div class="box-row">
             <div class="box-cell left_div">
                 <div id="image_poster">
-                    <img src="{{ object.poster_url }}" width="300px" height="444px">
+                    <img id="image" src="{{ object.poster_url }}">
                 </div>
                 <div id="form_info">
                     <form method="post" action="{% url 'content:update-status' object.pk %}"
@@ -80,7 +80,7 @@
                 </div>
             </div>
             <div id="table_data">
-                <a class="button" href="{% url 'content:add_in_platform' object.pk %}">Add Link</a>
+                <a id="add_link" class="button" href="{% url 'content:add_in_platform' object.pk %}">Add Link</a>
                 <table class="cell-border" id="datatable_links">
                     <thead>
                     <tr>

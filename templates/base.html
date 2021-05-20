@@ -39,11 +39,13 @@
 </div>
 <div id="content">
     {% if request.user.is_authenticated %}
+        <div id="searchbar_full">
         <form method="post" action="{% url 'content:content_search_go' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <select class="js-example-data-ajax form-control" name="search_bar" id="search_bar" required></select>
             <input id="search_button" type="submit" value="Go">
         </form>
+         </div>
     {% endif %}
     {% block content %}
     {% endblock %}

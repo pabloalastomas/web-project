@@ -6,7 +6,7 @@ from django.http import JsonResponse, HttpResponseForbidden, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, TemplateView, DetailView, DeleteView
+from django.views.generic import CreateView, TemplateView, DetailView, DeleteView, UpdateView
 from pip._vendor import requests
 
 from entertainment_db.forms import *
@@ -172,6 +172,37 @@ class PlatformContentCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Add link to a streaming platform'
+        return context
+
+
+class PlatformContentUpdateView(UpdateView):
+    model = PlatformContent
+    form_class = PlatformContentForm
+    template_name = 'form.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        content = PlatformContent.objects.get(pk=self.object.pk)
+        if content.user == request.user:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden()
+
+    def get_form(self, **kwargs):
+        form = super().get_form(**kwargs)
+        form.fields['content'].disabled = True
+        form.fields['platform'].disabled = True
+        form.fields['user'].disabled = True
+        return form
+
+    def get_success_url(self):
+        content = PlatformContent.objects.get(pk=self.object.pk)
+        return reverse_lazy('content:info', kwargs={'pk': content.content.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Edit link from a streaming platform'
         return context
 
 

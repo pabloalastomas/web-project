@@ -28,6 +28,7 @@ urlpatterns = [
     path('status/update/<int:content_id>/', update_status, name='update-status'),
     path('status/delete/<int:pk>/', StatusDeleteView.as_view(), name='delete-status'),
     path('platform/add/<int:id>/', PlatformContentCreateView.as_view(), name='add_in_platform'),
+    path('platform/edit/<int:pk>/', PlatformContentUpdateView.as_view(), name='edit_in_platform'),
     path('platform/delete/<int:pk>/', PlatformContentDeleteView.as_view(), name='delete_in_platform'),
 
 ]

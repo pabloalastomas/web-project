@@ -97,7 +97,8 @@
                             <td><a href="{{ c.url }}">{{ c.url }}</a></td>
                             <td>{{ c.user.username }}</td>
                             {% if user.pk == c.user.pk %}
-                                <td><a class="button" href="{% url 'content:delete_in_platform' c.pk %}">Delete link</a>
+                                <td><a class="button" href="{% url 'content:delete_in_platform' c.pk %}">Delete link</a><br>
+                                <a class="button" href="{% url 'content:edit_in_platform' c.pk %}">Edit link</a>
                                 </td>
                             {% else %}
                                 <td>No options</td>

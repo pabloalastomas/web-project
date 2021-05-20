@@ -155,7 +155,7 @@ input, select, select2, textarea {
     padding: 8px 12px;
     font-size: 16px;
     font-family: 'Roboto', sans-serif;
-    float: left;
+    float: right;
     clear: both;
     width: 300px;
 }
@@ -337,4 +337,28 @@ ul#course-modules li:hover {
 #searchbar_full {
     position: absolute;
     left: 60%;
+}
+
+#datatable_status_wrapper {
+    position: absolute;
+    top: 350px;
+    left: 40px;
+    width: 40%;
+}
+
+#datatable_ratings_wrapper {
+    position: absolute;
+    top: 350px;
+    left: 50%;
+    width: 40%;
+}
+#status_title {
+    position: absolute;
+    top: 280px;
+    left: 40px;
+}
+#rating_title {
+    position: absolute;
+    top: 280px;
+    left: 50%;
 }

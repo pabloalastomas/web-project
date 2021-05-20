@@ -21,6 +21,7 @@ Feature: View content
       | Inception |  | Watched   |  | 4      |  | Incredible !       |  | Netflix  |  | https://cutt.ly/Xb0xy0m |
       | TENET     |  | Favourite |  | 5      |  | Good but confusing |  | Disney + |  | https://cutt.ly/eb0z5Gs |
 
+    @view_list_of_content
   Scenario: View the list of content created by the user
     Given I login as user "user1" with password "webproject"
     Then I'm viewing the list of content

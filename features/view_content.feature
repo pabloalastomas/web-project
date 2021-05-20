@@ -21,6 +21,7 @@ Feature: View content
       | Inception |  | Watched   |  | 4      |  | Incredible !       |  | Netflix  |  | https://cutt.ly/Xb0xy0m |
       | TENET     |  | Favourite |  | 5      |  | Good but confusing |  | Disney + |  | https://cutt.ly/eb0z5Gs |
 
+    @view_list_of_content
   Scenario: View the list of content created by the user
     Given I login as user "user1" with password "webproject"
     Then I'm viewing the list of content
@@ -28,12 +29,14 @@ Feature: View content
       | Inception      |
       | Doctor Strange |
 
+    @view_global_rating
   Scenario: View the global rating of a specific content
     Given I login as user "user1" with password "webproject"
     Then I'm viewing the global rating for the content
       | film      |  | global rating |
       | Inception |  | 4.5           |
 
+    @view_platform_and_link_added
   Scenario: View the platform and link added by other user for a specific content
     Given I login as user "user1" with password "webproject"
     Then I'm viewing the platform added by an other user for a specific content

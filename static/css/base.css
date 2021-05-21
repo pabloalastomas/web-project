@@ -323,12 +323,6 @@ ul#course-modules li:hover {
     left: 450px;
 }
 
-#search_bar {
-    position: absolute;
-    top: 12%;
-    left: 68%;
-}
-
 #add_link {
     position: absolute;
     top: -77px;
@@ -360,4 +354,17 @@ ul#course-modules li:hover {
     position: absolute;
     top: 280px;
     left: 50%;
+}
+#delete_button {
+    position: relative;
+    left: 125px;
+    top: 8px;
+}
+#edit_button {
+    position: relative;
+    top: -10px;
+}
+
+#delete_profile {
+    padding: 8px 20px;
 }

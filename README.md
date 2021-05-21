@@ -6,7 +6,8 @@
 
 ### Credentials (user / pasword):  
 - Admin User: *admin / webproject*
-- Non Admin User: *noadmin / webproject*
+- User 1: *noadmin / webproject*
+- User 2: *user2/webproject*
 
 ### Developed by:  
 Ilyass Mahdiyan  

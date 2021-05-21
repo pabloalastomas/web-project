@@ -1,3 +1,5 @@
+import time
+
 from behave import *
 from entertainment_db.models import *
 

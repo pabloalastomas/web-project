@@ -37,7 +37,6 @@ h1 {
 .module h3 {
     margin: 20px 0 0;
     padding: 0;
-    width: 100%;
 }
 
 .module p {
@@ -320,7 +319,7 @@ ul#course-modules li:hover {
 
 #table_data {
     position: absolute;
-    top: 600px;
+    top: 660px;
     left: 450px;
 }
 

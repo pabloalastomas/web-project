@@ -1,4 +1,4 @@
-from django.forms import ModelForm, Textarea
+from django.forms import ModelForm, Textarea, TextInput
 
 from entertainment_db.models import Assessment, StatusUserContent, PlatformContent
 
@@ -14,6 +14,12 @@ class AssessmentForm(ModelForm):
         model = Assessment
         fields = '__all__'
         exclude = ['user', 'content']
+        widgets = {
+            'review': Textarea(
+                attrs={
+                    'itemprop': 'review'
+                },
+            )}
 
 
 class StatusUserContentForm(ModelForm):

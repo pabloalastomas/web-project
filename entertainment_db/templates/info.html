@@ -16,67 +16,70 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{ object.title }}</h1>
-    <div class="box">
-        <div class="box-row">
-            <div class="box-cell left_div">
-                <div id="image_poster">
-                    <img id="image" src="{{ object.poster_url }}">
-                </div>
-                <div id="form_info">
-                    <form method="post" action="{% url 'content:update-status' object.pk %}"
-                          enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{ status_form.as_p }}
-                        <input type="submit" value="Save">
-                    </form>
-                </div>
+    <div itemscope itemtype="https://schema.org/Movie">
+        <h1 itemprop="name">{{ object.title }}</h1>
+        <div class="box">
+            <div class="box-row">
+                <div class="box-cell left_div">
+                    <div id="image_poster">
+                        <img id="image" src="{{ object.poster_url }}" itemprop="image">
+                    </div>
+                    <div id="form_info">
+                        <form method="post" action="{% url 'content:update-status' object.pk %}"
+                              enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ status_form.as_p }}
+                            <input type="submit" value="Save">
+                        </form>
+                    </div>
 
-            </div>
-            <div class="box-cell right_div">
-                <div id="synopsis">
-                    <h3>Synopsis</h3>
-                    {{ object.synopsis }} <br>
                 </div>
-                <div id="airdate">
-                    <h3>Airdate</h3>
-                    {{ object.airdate }} <br>
-                </div>
-                {% if status_content.value in "bc" %}
-                    <div id="rating_stars">
-                        <h3>Your Rating</h3>
-                        <select class="star-rating" id="star_rating">
-                            <option value="0">Select a rating</option>
-                            {% for i in '54321'|make_list %}
-                                {% if status_rating.value == i and status_rating.exists %}
-                                    <option value="{{ i }}" selected>{{ i }}</option>
-                                {% else %}
-                                    <option value="{{ i }}">{{ i }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                <div class="box-cell right_div">
+                    <div id="synopsis">
+                        <h3 itemprop="abstract">Synopsis</h3>
+                        {{ object.synopsis }} <br>
                     </div>
-                {% else %}
-                    <div id="rating_stars">
-                        <h3>Your Rating</h3>
-                        <select class="star-rating" id="star_rating" disabled>
-                            <option value="0">Select a rating</option>
-                            <option value="5">5</option>
-                            <option value="4">4</option>
-                            <option value="3">3</option>
-                            <option value="2">2</option>
-                            <option value="1">1</option>
-                        </select>
-                        <p>To rate this content you must mark as <b>watched or favorite</b>. </p>
+                    <div id="airdate">
+                        <h3>Airdate</h3>
+                        <time datetime="{{ object.airdate|date:"Y-m-d" }}" itemprop="datePublished">{{ object.airdate }}</time>
+                        <br>
                     </div>
-                {% endif %}
-                <div id="global_review">
-                    <h3>Global Rating</h3>
-                    {% if global_rating.rating__avg %}
-                        {{ global_rating.rating__avg|floatformat:"2" }}
+                    {% if status_content.value in "bc" %}
+                        <div id="rating_stars" itemscope itemtype="https://schema.org/Rating">
+                            <h3 itemprop="ratingValue">Your Rating</h3>
+                            <select class="star-rating" id="star_rating">
+                                <option value="0">Select a rating</option>
+                                {% for i in '54321'|make_list %}
+                                    {% if status_rating.value == i and status_rating.exists %}
+                                        <option value="{{ i }}" selected>{{ i }}</option>
+                                    {% else %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
                     {% else %}
-                        <p>No existing rating</p>
+                        <div id="rating_stars">
+                            <h3>Your Rating</h3>
+                            <select class="star-rating" id="star_rating" disabled>
+                                <option value="0">Select a rating</option>
+                                <option value="5">5</option>
+                                <option value="4">4</option>
+                                <option value="3">3</option>
+                                <option value="2">2</option>
+                                <option value="1">1</option>
+                            </select>
+                            <p>To rate this content you must mark as <b>watched or favorite</b>. </p>
+                        </div>
                     {% endif %}
+                    <div id="global_review" itemscope itemtype="https://schema.org/Rating">
+                        <h3 itemprop="ratingValue">Global Rating</h3>
+                        {% if global_rating.rating__avg %}
+                            {{ global_rating.rating__avg|floatformat:"2" }}
+                        {% else %}
+                            <p>No existing rating</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             <div id="table_data">
@@ -114,7 +117,6 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 {% block javascript %}
     <script>

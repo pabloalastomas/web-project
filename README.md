@@ -4,11 +4,6 @@
 - Heroku: https://entertainment-db-udl.herokuapp.com/
 - Docker: *docker-compose up -d*
 
-### Credentials (user / pasword):  
-- Admin User: *admin / webproject*
-- User 1: *noadmin / webproject*
-- User 2: *user2 / webproject*
-
 ### Developed by:  
 Ilyass Mahdiyan  
 Pablo Alás  

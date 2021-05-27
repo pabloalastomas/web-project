@@ -16,13 +16,13 @@
 {% endblock %}
 
 {% block content %}
-    <div itemscope itemtype="https://schema.org/Movie">
-        <h1 itemprop="name">{{ object.title }}</h1>
+    <div vocab="http://schema.org/" typeof="Movie">
+        <h1 property="name">{{ object.title }}</h1>
         <div class="box">
             <div class="box-row">
                 <div class="box-cell left_div">
                     <div id="image_poster">
-                        <img id="image" src="{{ object.poster_url }}" itemprop="image">
+                        <img id="image" src="{{ object.poster_url }}" property="image">
                     </div>
                     <div id="form_info">
                         <form method="post" action="{% url 'content:update-status' object.pk %}"
@@ -36,22 +36,22 @@
                 </div>
                 <div class="box-cell right_div">
                     <div id="synopsis">
-                        <h3 itemprop="abstract">Synopsis</h3>
-                        {{ object.synopsis }} <br>
+                        <h3 >Synopsis</h3>
+                        <div property="abstract"> {{ object.synopsis }}</div> <br>
                     </div>
                     <div id="airdate">
                         <h3>Airdate</h3>
-                        <time datetime="{{ object.airdate|date:"Y-m-d" }}" itemprop="datePublished">{{ object.airdate }}</time>
+                        <time datetime="{{ object.airdate|date:"Y-m-d" }}" property="datePublished">{{ object.airdate }}</time>
                         <br>
                     </div>
                     {% if status_content.value in "bc" %}
-                        <div id="rating_stars" itemscope itemtype="https://schema.org/Rating">
-                            <h3 itemprop="ratingValue">Your Rating</h3>
+                        <div id="rating_stars" typeof="Rating">
+                            <h3>Your Rating</h3>
                             <select class="star-rating" id="star_rating">
                                 <option value="0">Select a rating</option>
                                 {% for i in '54321'|make_list %}
                                     {% if status_rating.value == i and status_rating.exists %}
-                                        <option value="{{ i }}" selected>{{ i }}</option>
+                                        <option value="{{ i }}" selected property="ratingValue">{{ i }} </option>
                                     {% else %}
                                         <option value="{{ i }}">{{ i }}</option>
                                     {% endif %}
@@ -59,10 +59,10 @@
                             </select>
                         </div>
                     {% else %}
-                        <div id="rating_stars">
+                        <div id="rating_stars" typeof="Rating">
                             <h3>Your Rating</h3>
                             <select class="star-rating" id="star_rating" disabled>
-                                <option value="0">Select a rating</option>
+                                <option property="ratingValue" value="0">Select a rating</option>
                                 <option value="5">5</option>
                                 <option value="4">4</option>
                                 <option value="3">3</option>
@@ -72,12 +72,12 @@
                             <p>To rate this content you must mark as <b>watched or favorite</b>. </p>
                         </div>
                     {% endif %}
-                    <div id="global_review" itemscope itemtype="https://schema.org/Rating">
-                        <h3 itemprop="ratingValue">Global Rating</h3>
+                    <div id="global_review" typeof="Rating">
+                        <h3>Global Rating</h3>
                         {% if global_rating.rating__avg %}
-                            {{ global_rating.rating__avg|floatformat:"2" }}
+                            <div property="ratingValue">{{ global_rating.rating__avg|floatformat:"2" }}</div>
                         {% else %}
-                            <p>No existing rating</p>
+                            <p property="ratingValue">No existing rating</p>
                         {% endif %}
                     </div>
                 </div>
@@ -121,7 +121,6 @@
 {% block javascript %}
     <script>
         $(document).ready(function () {
-            document.getElementById('id_review').setAttribute('itemprop', 'review');
             document.getElementById('id_review').setAttribute('itemprop', 'review');
             if ("{{ status_content.exists }}" === "1") {
                 document.getElementById('id_review').value = "{{ status_content.review }}";

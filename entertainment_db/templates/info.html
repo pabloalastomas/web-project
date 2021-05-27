@@ -98,9 +98,12 @@
                             <td>{{ c.user.username }}</td>
                             {% if user.pk == c.user.pk %}
                                 <td>
-                                    <div id="buttons_info"><a id="delete_button" class="button" href="{% url 'content:delete_in_platform' c.pk %}">Delete link</a><br>
-                                    <a id="edit_button" class="button" href="{% url 'content:edit_in_platform' c.pk %}">Edit
-                                        link</a>
+                                    <div id="buttons_info"><a id="delete_button" class="button"
+                                                              href="{% url 'content:delete_in_platform' c.pk %}">Delete
+                                        link</a><br>
+                                        <a id="edit_button" class="button"
+                                           href="{% url 'content:edit_in_platform' c.pk %}">Edit
+                                            link</a>
                                     </div>
                                 </td>
                             {% else %}

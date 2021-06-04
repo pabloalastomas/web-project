@@ -6,7 +6,8 @@ from entertainment_db.models import Assessment, StatusUserContent, PlatformConte
 class AssessmentForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for form in self.visible_fields():
+        visible = self.visible_fields()
+        for form in visible:
             form.field.widget.attrs['class'] = 'form-control'
             form.field.widget.attrs['autocomplete'] = 'off'
 
@@ -14,12 +15,6 @@ class AssessmentForm(ModelForm):
         model = Assessment
         fields = '__all__'
         exclude = ['user', 'content']
-        widgets = {
-            'review': Textarea(
-                attrs={
-                    'itemprop': 'review'
-                },
-            )}
 
 
 class StatusUserContentForm(ModelForm):
@@ -28,7 +23,7 @@ class StatusUserContentForm(ModelForm):
         for form in self.visible_fields():
             form.field.widget.attrs['class'] = 'form-control'
             form.field.widget.attrs['autocomplete'] = 'off'
-
+            
     class Meta:
         model = StatusUserContent
         fields = '__all__'
